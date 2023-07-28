@@ -86,11 +86,7 @@ class centro (models.Model):
 
         return self.nome
 
-
-
 #########################     ARQUIVO  DA CHANCELARIA     ###################################
-
-
 class livroCasamento(models.Model):
 
     diocese = models.ForeignKey(diocese, null=False, blank=False, verbose_name='Diocese de proveniencia', on_delete=models.CASCADE, max_length=100)
@@ -112,8 +108,8 @@ class registoCasamento(models.Model):
     profissaonoivo = models.CharField(null=False, blank=False, verbose_name='Profissão', max_length=100)
     naturalidadenoivo = models.CharField(null=False, blank=False, verbose_name='Natural', max_length=200)
     provincianoivo = models.ForeignKey(provincia, null=False, blank=False, verbose_name='Provincia', on_delete=models.CASCADE, max_length=50)
-    nomepainoivo = models.CharField(verbose_name='Nome do Pai', max_length=200)
-    nomemaenoivo = models.CharField(verbose_name='Nome da Mãe', max_length=200)
+    nomepainoivo = models.CharField(verbose_name='Nome do Pai', max_length=200, null=True, blank=True)
+    nomemaenoivo = models.CharField(verbose_name='Nome da Mãe', max_length=200, null=True, blank=True)
 
     #################################   DADOS DA NOIVA      ########################################
 
@@ -123,8 +119,8 @@ class registoCasamento(models.Model):
     profissaonoiva = models.CharField(null=False, blank=False, verbose_name='Profissão', max_length=100)
     naturalidadenoiva = models.CharField(null=False, blank=False, verbose_name='Natural', max_length=200)
     provincianoiva = models.ForeignKey(provincia, null=False, blank=False, verbose_name='Provincia', on_delete=models.CASCADE, max_length=50, related_name='Provincia')
-    nomepainoiva = models.CharField(verbose_name='Nome do Pai', max_length=200)
-    nomemaenoiva = models.CharField(verbose_name='Nome da Mãe', max_length=200)
+    nomepainoiva = models.CharField(verbose_name='Nome do Pai', max_length=200, null=True, blank=True)
+    nomemaenoiva = models.CharField(verbose_name='Nome da Mãe', max_length=200, null=True, blank=True)
 
     ############################ DADOS DO ASSENTO ######################################################
 
@@ -133,7 +129,7 @@ class registoCasamento(models.Model):
     sobrenome = models.CharField(max_length=90, null=False, blank=False, verbose_name='Apelido adoptado pelos nubentes')
     celebrante = models.CharField(max_length=200, null=False, blank=False, verbose_name='Celebrante')
     igreja = models.CharField(max_length=200, null=False, blank=False, verbose_name='Igreja')
-    municiopio = models.CharField(max_length=200, null=False, blank=False, verbose_name='Municipio')
+    municipio = models.CharField(max_length=200, null=False, blank=False, verbose_name='Municipio')
     diocese = models.ForeignKey(diocese, null=False, blank=False, on_delete=models.PROTECT)
     imagemfrente = models.ImageField(null=False, blank=False, upload_to='img_assento_casamento', verbose_name='Imagem Frente')
     imagemverso = models.ImageField(null=False, blank=False, upload_to='img_assento_casamento', verbose_name='Imagem Verso')
@@ -160,7 +156,6 @@ class livroBaptismo(models.Model):
     def __str__(self):
         return self.numero
 
-
 class registoBaptismo(models.Model):
     data = models.DateField(verbose_name='Data do Baptismo')
     concelho = models.CharField(blank=True, null=True, max_length=100)
@@ -173,12 +168,12 @@ class registoBaptismo(models.Model):
     naturalidade = models.ForeignKey(provincia, null=False, blank=False, max_length=50, on_delete=models.CASCADE)
     livro = models.ForeignKey(livroBaptismo, null=False, blank=False, on_delete=models.CASCADE)
     raca = models.CharField(max_length=7, null=True, blank=True, choices=raca, verbose_name='Raça')
-    nomepai = models.CharField(max_length=150,  verbose_name='Nome do Pai')
-    nomemae = models.CharField(max_length=150,  verbose_name='Nome da Mãe')
-    netopaternohomem = models.CharField(max_length=150,  verbose_name='Nome do progenitor do pai')
-    netopaternomulher = models.CharField(max_length=150,  verbose_name='Nome da progenitora do pai')
-    netomaternohomem = models.CharField(max_length=150,  verbose_name='Nome do progenitor da mãe')
-    netomaternomulher = models.CharField(max_length=150,  verbose_name='Nome da progenitora do mãe')
+    nomepai = models.CharField(max_length=150,  verbose_name='Nome do Pai', null=True, blank=True)
+    nomemae = models.CharField(max_length=150,  verbose_name='Nome da Mãe', null=True, blank=True)
+    netopaternohomem = models.CharField(max_length=150,  verbose_name='Nome do progenitor do pai', null=True, blank=True)
+    netopaternomulher = models.CharField(max_length=150,  verbose_name='Nome da progenitora do pai',null=True, blank=True)
+    netomaternohomem = models.CharField(max_length=150,  verbose_name='Nome do progenitor da mãe', null=True, blank=True)
+    netomaternomulher = models.CharField(max_length=150,  verbose_name='Nome da progenitora do mãe', null=True, blank=True)
     padrinho = models.CharField(max_length=150, null=True, blank=True, verbose_name='Padrinho')
     madrinha = models.CharField(max_length=150, null=True, blank=True, verbose_name='Madrinha')
     imagem = models.ImageField(verbose_name='Imagem do assento', upload_to='img_baptismo')
