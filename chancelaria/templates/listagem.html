@@ -1,0 +1,101 @@
+{% extends "account/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Faça a sua busca no nosso Banco de Dados</h6>
+                        </div>
+                        <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Registo da Arquidiocese</h1>
+                    <!-- DataTales Example -->
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Arquivos</h6>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                        <form method="GET" class="d-none d-sm-inline-block form-inline mr-auto ml-md-6 my-2 my-md-0 mw-100 navbar-search">
+                                            <div class="input-group">
+                                                {{busca.form.as_p}}
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="submit">
+                                                    <i class="fas fa-search fa-sm"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Arquidiocese</th>
+                                            <th>Província</th>
+                                            <th>Endereço</th>
+                                            <th>Telefone</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Arquidiocese</th>
+                                            <th>Província</th>
+                                            <th>Endereço</th>
+                                            <th>Telefone</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {% for paroquia in busca.qs %}
+                                                    {{paroquia.nome}}
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for paroquia in busca.qs %}
+                                                    {{paroquia.congregacao}}
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for busca in busca.qs %}
+                                                    {{busca.provincia}}
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for paroquia in busca.qs %}
+                                                    {{paroquia.endereco}}
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for diocese in busca.qs %}
+                                                    {{diocese.telefone}}
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for diocese in busca.qs %}
+                                                    {{diocese.email}}
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+  </div>
+
+{% endblock %}

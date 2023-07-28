@@ -1,0 +1,132 @@
+{% extends "account/base.html" %}
+{% load crispy_forms_tags %}
+
+
+
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">
+
+{% csrf_token %}
+<div class="container">
+    <h4>Dados do Noivo </h4>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.nomenoivo|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{formulario.nascimentonoivo|as_crispy_field  }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.estadocivilnoivo|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{formulario.naturalidadenoivo|as_crispy_field  }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.nomemaenoivo|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{formulario.nomepainoivo|as_crispy_field  }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.profissaonoivo|as_crispy_field }}
+        </div>
+
+    <div class="col-sm-6">
+            {{formulario.provincianoivo|as_crispy_field  }}
+        </div>
+    </div>
+    <h4>Dados da Noiva </h4>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.nomenoiva|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{formulario.nascimentonoiva|as_crispy_field  }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.estadocivilnoiva|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{formulario.naturalidadenoiva|as_crispy_field  }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.nomemaenoiva|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{formulario.nomepainoiva|as_crispy_field  }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.profissaonoiva|as_crispy_field }}
+        </div>
+
+    <div class="col-sm-6">
+            {{formulario.provincianoiva|as_crispy_field  }}
+        </div>
+    </div>
+    <h4>Dados do Registo </h4>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.numero|as_crispy_field }}
+        </div>
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.folha|as_crispy_field }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.data|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{formulario.sobrenome|as_crispy_field  }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.celebrante|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{formulario.igreja|as_crispy_field  }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.municiopio|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{formulario.diocese|as_crispy_field  }}
+        </div>
+    </div>
+    <div class="form-group row">
+
+
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.imagemfrente|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{formulario.imagemverso|as_crispy_field  }}
+        </div>
+    </div>
+</div>
+
+    <button type="submit">Salvar Assento de Casamento</button>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "account/base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    <div class="container">
+
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.nome|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.sobrenome|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{formulario.data|as_crispy_field }}
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.paroquia|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.numero|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.livro|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.sexo|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.naturalidade|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.nascimento|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.raca|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.concelho|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.nomepai|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.nomemae|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.netomaternohomem|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.netomaternomulher|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.netopaternohomem|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.netopaternomulher|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.padrinho|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.madrinha|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{formulario.imagem|as_crispy_field }}
+            </div>
+            <button type="submit" class="btn btn-primary btn-user btn-block">Salvar Registo</button>
+
+    </div>
+</form>
+{% endblock %}

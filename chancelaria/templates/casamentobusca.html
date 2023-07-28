@@ -1,0 +1,84 @@
+{% extends "account/base.html" %}
+
+
+
+{% block content %}
+                            <form method="GET"  enctype="multipart/form-data">
+                                {{busca.form}}
+                            </form>
+                            <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Noivo</th>
+                                            <th>província</th>
+                                            <th>Noiva</th>
+                                            <th>Diocese</th>
+                                            <th>Data</th>
+                                            <th>Paróquia</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Noivo</th>
+                                            <th>província</th>
+                                            <th>Noiva</th>
+                                            <th>Diocese</th>
+                                            <th>Data</th>
+                                            <th>Paróquia</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {% for pessoa in banco %}
+                                                    <a href="{% url 'url_update_casamento' pessoa.id %}"> {{pessoa.nomenoivo }}</a>
+                                                <hr>
+                                                {% endfor %}
+
+                                            </td>
+                                            <td>
+                                                {% for pessoa in banco %}
+                                                    {{ pessoa.diocese.provincia }}
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for pessoa in banco %}
+                                                    {{pessoa.nomenoiva }}
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for pessoa in banco %}
+                                                    {{pessoa.diocese }}
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for pessoa in banco %}
+                                                    {{pessoa.data }}
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for pessoa in banco %}
+                                                    {{pessoa.igreja }}
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+
+
+{%  endblock %}

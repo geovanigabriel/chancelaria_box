@@ -1,0 +1,98 @@
+{% extends "account/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+                    <!-- Page Heading -->
+                    <!-- DataTales Example -->
+
+
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Arquivos</h6>
+                        </div>
+
+
+                            <div class="table-responsive">
+                                {% csrf_token %}
+                                        <form method="GET" enctype="multipart/form-data">
+                                            {% csrf_token %}
+
+                                                <div class="form-group row">
+                                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                                         {{ busca.form.nome|as_crispy_field }}
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        {{ busca.form.sobrenome|as_crispy_field }}
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-primary" type="submit">Procurar por Assento</button>
+
+                                        </form>
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Sobrenome</th>
+                                            <th>Província</th>
+                                            <th>Diocese</th>
+                                            <th>Paróquia</th>
+                                            <th>Data</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Sobrenome</th>
+                                            <th>Província</th>
+                                            <th>Diocese</th>
+                                            <th>Paróquia</th>
+                                            <th>Data</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {% for registo in busca.qs %}
+
+                                                   <a href="{% url 'url_update_baptismo' registo.pk %}">{{registo.nome}}</a>
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for registo in busca.qs %}
+                                                   <a href="{% url 'url_update_baptismo' registo.pk %}">{{registo.sobrenome}}</a>
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for registo in busca.qs %}
+                                                  <a href="{% url 'url_update_baptismo' registo.pk %}">{{ registo.livro}}</a>
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for registo in busca.qs %}
+                                                   <a href="{% url 'url_update_baptismo' registo.pk %}"> {{ registo.livro.diocese}}</a>
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for registo in busca.qs %}
+                                                   <a href="{% url 'url_update_baptismo' registo.pk %}">{{ registo.paroquia}}</a>
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for registo in busca.qs %}
+                                                    <a href="{% url 'url_update_baptismo' registo.pk %}">{{ registo.data}}</a>
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+
+{% endblock %}
