@@ -88,7 +88,7 @@ class centro (models.Model):
 
 #########################     ARQUIVO  DA CHANCELARIA     ###################################
 class livroCasamento(models.Model):
-
+    nome = models.CharField(max_length=500, null=False, blank=False, verbose_name='Descrição')
     diocese = models.ForeignKey(diocese, null=False, blank=False, verbose_name='Diocese de proveniencia', on_delete=models.CASCADE, max_length=100)
     paroquia = models.ForeignKey(paroquia, null=False, blank=False, verbose_name='Paróquia de proveniencia', on_delete=models.CASCADE, max_length=100)
     provincia = models.ForeignKey(provincia, null=False, blank=False, verbose_name='Província de proveniencia', on_delete=models.CASCADE, max_length=100)
@@ -128,7 +128,7 @@ class registoCasamento(models.Model):
     folha = models.IntegerField(null=False, blank=False,verbose_name='Fl nº')
     sobrenome = models.CharField(max_length=90, null=False, blank=False, verbose_name='Apelido adoptado pelos nubentes')
     celebrante = models.CharField(max_length=200, null=False, blank=False, verbose_name='Celebrante')
-    igreja = models.CharField(max_length=200, null=False, blank=False, verbose_name='Igreja')
+    igreja = models.ForeignKey(paroquia, on_delete=models.CASCADE,max_length=200, null=False, blank=False, verbose_name='Igreja')
     municipio = models.CharField(max_length=200, null=False, blank=False, verbose_name='Municipio')
     diocese = models.ForeignKey(diocese, null=False, blank=False, on_delete=models.PROTECT)
     imagemfrente = models.ImageField(null=False, blank=False, upload_to='img_assento_casamento', verbose_name='Imagem Frente')
@@ -142,6 +142,7 @@ class registoCasamento(models.Model):
         return self.nomenoivo
 
 class livroBaptismo(models.Model):
+    nome = models.CharField(max_length=500, null=False, blank=False, verbose_name='Descrição')
     numero = models.CharField(max_length=4, blank=False, null=False)
     diocese = models.ForeignKey(diocese, null=False, blank=False, verbose_name='Diocese de proveniencia', on_delete=models.CASCADE, max_length=100)
     paroquia = models.ForeignKey(paroquia, null=False, blank=False, verbose_name='Diocese de proveniencia', on_delete=models.CASCADE, max_length=100)
