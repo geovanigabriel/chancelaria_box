@@ -9,10 +9,11 @@ from chancelaria.models import paroquia, provincia, provinciaeclesiastica, regis
     livroBaptismo, diocese,  congregacao, zona, vigararia, arquidiocese, centro
 
 
-
-
-
-
+import io
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import  canvas
+from django.http import FileResponse
 
 from chancelaria.filters import dioceseBusca, paroquiaBusca, baptismoBusca, casamentoBusca
 
@@ -27,6 +28,60 @@ def baptismoPesquisa(request):
                 'provincia': bancoprovincia
                }
     return render(request, 'baptismobusca.html', context)
+
+
+
+############################     P D F #########################################
+@login_required()
+def baptismopdf(request, pk):
+    pdf = io.BytesIO()
+    canva = canvas.Canvas(pdf, pagesize=letter, bottomup=0)
+    pdfobjecto = canva.beginText()
+    pdfobjecto.setTextOrigin(inch, inch)
+    pdfobjecto.setFont('Helvetica', 16)
+
+    banco = registoBaptismo.objects.get(pk=pk)
+
+    registo = []
+
+
+
+    for assunto in registo:
+        pdfobjecto.textLine(assunto)
+
+
+    canva.drawText(pdfobjecto)
+    canva.showPage()
+    canva.save()
+    pdf.seek(0)
+
+    return FileResponse( request, pdf, as_attachment=True, filename='Registo.pdf')
+
+@login_required()
+def casamentopdf( request):
+    pdf = io.BytesIO()
+    canva = canvas.Canvas(pdf, pagesize=letter, bottomup=0)
+    pdfobjecto = canva.beginText()
+    pdfobjecto.setTextOrigin(inch, inch)
+    pdfobjecto.setFont('Helvetica', 16)
+
+    banco = registoCasamento.objects.all()
+    registo = []
+
+    for linha in banco:
+        registo.append(linha.nome)
+
+    for assunto in registo:
+        pdfobjecto.textLine(assunto)
+
+
+    canva.drawText(pdfobjecto)
+    canva.showPage()
+    canva.save()
+    pdf.seek(0)
+
+    return FileResponse(pdf, as_attachment=True, filename='Registo.pdf')
+
 @login_required()
 def lista(request):
     diocesebanco = diocese.objects.all()

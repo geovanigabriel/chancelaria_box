@@ -37,6 +37,7 @@
                                             <th>Diocese</th>
                                             <th>Paróquia</th>
                                             <th>Data</th>
+                                            <th>PDF</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -47,6 +48,7 @@
                                             <th>Diocese</th>
                                             <th>Paróquia</th>
                                             <th>Data</th>
+                                            <th>PDF</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -55,6 +57,7 @@
                                                 {% for registo in busca.qs %}
 
                                                    <a href="{% url 'url_update_baptismo' registo.pk %}">{{registo.nome}}</a>
+
                                                 <hr>
                                                 {% endfor %}
                                             </td>
@@ -85,6 +88,12 @@
                                             <td>
                                                 {% for registo in busca.qs %}
                                                     <a href="{% url 'url_update_baptismo' registo.pk %}">{{ registo.data}}</a>
+                                                <hr>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for registo in busca.qs %}
+                                                    <a href="{% url 'url_pdf_baptismo' registo.pk %}">Baixar</a>
                                                 <hr>
                                                 {% endfor %}
                                             </td>

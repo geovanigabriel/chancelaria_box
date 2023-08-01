@@ -140,7 +140,6 @@ class registoCasamento(models.Model):
 
     def __str__(self):
         return self.nomenoivo
-
 class livroBaptismo(models.Model):
     nome = models.CharField(max_length=500, null=False, blank=False, verbose_name='Descrição')
     numero = models.CharField(max_length=4, blank=False, null=False)
@@ -156,7 +155,6 @@ class livroBaptismo(models.Model):
 
     def __str__(self):
         return self.numero
-
 class registoBaptismo(models.Model):
     data = models.DateField(verbose_name='Data do Baptismo')
     concelho = models.CharField(blank=True, null=True, max_length=100)

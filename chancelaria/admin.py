@@ -13,4 +13,7 @@ admin.site.register(registoCasamento)
 admin.site.register(diocese)
 admin.site.register(arquidiocese)
 admin.site.register(vigararia)
+admin.site.register(zona)
+admin.site.register(congregacao)
+
 
