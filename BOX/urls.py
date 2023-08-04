@@ -13,7 +13,7 @@ urlpatterns = [
     path('', home, name='url_home'),
     path('listagem/', lista, name='url_listagem'),
     path('livro_baptismo/', livro, name='url_listagem_livro'),
-
+    path('export-pdf/', export_pdf_baptismo, name='export-pdf'),
     path('updateparoquia/<int:pk>/', updateparoquia, name='url_update'),
     path('updatebaptismo/<int:pk>/', updateBaptismo, name='url_update_baptismo'),
     path('updatecasamento/<int:pk>/', updateCasamento, name='url_update_casamento'),

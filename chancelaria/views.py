@@ -30,7 +30,7 @@ def baptismoPesquisa(request):
 
 
 
-############################     P D F  BAPTISMO     #########################################
+############################     P D F  BAPTISMO      #########################################
 def export_pdf_baptismo(request):
     obj = request.GET.get('obj')
     print(obj)
@@ -44,8 +44,7 @@ def export_pdf_baptismo(request):
     html_index = render_to_string('export-pdf.html', context)
 
     weasyprint_html = weasyprint.HTML(string=html_index, base_url='http://127.0.0.1:8000/media')
-    pdf = weasyprint_html.write_pdf(
-        stylesheets=[weasyprint.CSS(string='body { font-family: serif} img {margin: 10px; width: 50px;}')])
+    pdf = weasyprint_html.write_pdf(stylesheets=[weasyprint.CSS(string='body { font-family: serif} img {margin: 10px; width: 50px;}')])
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=Products' + str(datetime.datetime.now()) + '.pdf'
@@ -57,19 +56,6 @@ def export_pdf_baptismo(request):
         output.seek(0)
         response.write(output.read())
     return response
-@login_required()
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

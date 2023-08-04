@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'account/base.html' %}
 
 {% block content %}
 	<h1>Lista de Produtos</h1>
@@ -14,18 +14,12 @@
             </tr>
         </thead>
         <tbody>
-            {% for product in products %}
+            {% for registo in baptismopdf %}
             <tr>
-                <th scope="row">{{ baptismopdf.id }}</th>
-                <th scope="row">{{ baptismopdf.name|upper }}</th>
-                <th scope="row">{{ baptismopdf.pri }}</th>
-                <th scope="row">{{ baptismopdf.description }}</th>
-
-                <th scope="row">
-                    {% for el in product.products.all %}
-                    <img src="{{el.image.url}}" alt="{{el.id}}" class="mx-2" width="50">
-                    {% endfor %}
-                </th>
+                <th scope="row">{{ registo.nome }}</th>
+                <th scope="row">{{ registo.diocese|upper }}</th>
+                <th scope="row">{{ registo.paroquia }}</th>
+                <th scope="row">{{ registo.nome }}</th>
 
             </tr>
             {% endfor %}
