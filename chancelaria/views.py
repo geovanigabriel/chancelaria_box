@@ -1,20 +1,19 @@
+import weasyprint
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-
-
 from chancelaria.form import BaptimoForm, ParoquiaForm,  centroForm, VigarariaForm,  ArquidioceseForm, ProvinciaForm, CongregacaoForm, ZonaForm, DioceseForm, LivroFormBaptismo,  registocamento, LivroFormCasamento
-
-
+from django.shortcuts import render, redirect
+import datetime
+from django.http import HttpResponse
+import tempfile
+from django.template.loader import render_to_string
 from chancelaria.models import paroquia, provincia, provinciaeclesiastica, registoBaptismo, registoCasamento, \
     livroBaptismo, diocese,  congregacao, zona, vigararia, arquidiocese, centro
-
-
 import io
+from ctypes import *
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import  canvas
+from reportlab.pdfgen import canvas
 from django.http import FileResponse
-
 from chancelaria.filters import dioceseBusca, paroquiaBusca, baptismoBusca, casamentoBusca
 
 ##########################   PESQUISA     #####################
@@ -31,33 +30,49 @@ def baptismoPesquisa(request):
 
 
 
-############################     P D F #########################################
+############################     P D F  BAPTISMO     #########################################
+def export_pdf_baptismo(request):
+    obj = request.GET.get('obj')
+    print(obj)
+    if obj:
+        nome_pdf = registoBaptismo.objects.filter(name__icontains=obj)
+    else:
+        nome_pdf = registoBaptismo.objects.all()
+
+    context = {'baptismopdf': nome_pdf}
+
+    html_index = render_to_string('export-pdf.html', context)
+
+    weasyprint_html = weasyprint.HTML(string=html_index, base_url='http://127.0.0.1:8000/media')
+    pdf = weasyprint_html.write_pdf(
+        stylesheets=[weasyprint.CSS(string='body { font-family: serif} img {margin: 10px; width: 50px;}')])
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=Products' + str(datetime.datetime.now()) + '.pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
+
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(pdf)
+        output.flush()
+        output.seek(0)
+        response.write(output.read())
+    return response
 @login_required()
-def baptismopdf(request, pk):
-    pdf = io.BytesIO()
-    canva = canvas.Canvas(pdf, pagesize=letter, bottomup=0)
-    pdfobjecto = canva.beginText()
-    pdfobjecto.setTextOrigin(inch, inch)
-    pdfobjecto.setFont('Helvetica', 16)
-
-    banco = registoBaptismo.objects.get(pk=pk)
-
-    registo = []
 
 
 
-    for assunto in registo:
-        pdfobjecto.textLine(assunto)
 
 
-    canva.drawText(pdfobjecto)
-    canva.showPage()
-    canva.save()
-    pdf.seek(0)
 
-    return FileResponse( request, pdf, as_attachment=True, filename='Registo.pdf')
 
-@login_required()
+
+
+
+
+
+
+
+
 def casamentopdf( request):
     pdf = io.BytesIO()
     canva = canvas.Canvas(pdf, pagesize=letter, bottomup=0)
@@ -130,8 +145,8 @@ def updateparoquia(request, pk):
     contexto = {
         'formulario': formulario
     }
-    return render(request, 'paroquia.html', contexto)\
-        @login_required()
+    return render(request, 'paroquia.html', contexto)
+@login_required()
 def updateCasamento(request, pk):
     banco = paroquia.objects.get(pk=pk)
     formulario = ParoquiaForm(request.POST or None, instance=banco)

@@ -5,7 +5,7 @@ from chancelaria.views import home, delete, livro, arquidioceseCadastro, zonaCad
     paroquiaCadastro, vigarariaCadastro, provinciaCadastro, baptismocaCadastro, congregacaoCadastro, CadastroZona, \
     CadastroVigararia, CadastroParoquia, CadastroDiocese, listagemParoquia, listagemVigararia, listagemZona, \
     listagemDiocese, listagemArquidiocese, listagemCongregacao, listagemCentro, listagemProvinciaEclesiastica, \
-    livroCasamento, livroBaptismo,livrobaptismo ,lista,baptismopdf,casamentopdf,paroquiaBusca, updateCasamento,paroquiaPesquisa, updateBaptismo, baptismoPesquisa, registocasamento, casamentoPesquisa
+    livroCasamento, livroBaptismo,livrobaptismo ,lista,export_pdf_baptismo,casamentopdf,paroquiaBusca, updateCasamento,paroquiaPesquisa, updateBaptismo, baptismoPesquisa, registocasamento, casamentoPesquisa
 
 urlpatterns = [
     path('admin/', admin.site.urls, name= 'admin'),
@@ -31,7 +31,7 @@ urlpatterns = [
 
     path('pesquisa_baptismo/', baptismoPesquisa, name='url_pesquisa_baptismo'),
     path('pdf_casamento/', casamentopdf, name='url_pdf_casamento'),
-    path('pdf_baptismo/<int:pk>/', baptismopdf, name='url_pdf_baptismo'),
+    path('pdf_baptismo/<int:pk>/', export_pdf_baptismo, name='url_pdf_baptismo'),
     path('pesquisa_baptismo/', baptismoPesquisa, name='url_pesquisa_baptismo'),
     path('listagem_paroquia/', paroquiaPesquisa, name='url_listagem_paroquia'),
     path('pesquisa_casamento/', casamentoPesquisa, name='url_pesquisa_casamento'),
