@@ -20,6 +20,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_pagarme',
+    'phonenumber_field',
     'chancelaria',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -129,3 +131,8 @@ LOGOUT_RETIRECT_URL = 'admin'
 LOGIN_REDIRECT_URL = 'admin'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+
+
+PHONENUMBER_DEFAULT_REGION = 'AO'
