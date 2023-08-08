@@ -5,7 +5,7 @@ from chancelaria.views import home, delete, livro, arquidioceseCadastro, zonaCad
     paroquiaCadastro, vigarariaCadastro, provinciaCadastro, baptismocaCadastro, congregacaoCadastro, CadastroZona, \
     CadastroVigararia, CadastroParoquia, CadastroDiocese, listagemParoquia, listagemVigararia, listagemZona, \
     listagemDiocese, listagemArquidiocese, listagemCongregacao, listagemCentro, listagemProvinciaEclesiastica, \
-    livroCasamento, livroBaptismo,livrobaptismo ,lista,export_pdf_baptismo,casamentopdf,paroquiaBusca, updateCasamento,paroquiaPesquisa, updateBaptismo, baptismoPesquisa, registocasamento, casamentoPesquisa
+    livroCasamento, livroBaptismo,livrobaptismo, dashebord,lista,export_pdf_baptismo,casamentopdf,paroquiaBusca, updateCasamento,paroquiaPesquisa, updateBaptismo, baptismoPesquisa, registocasamento, casamentoPesquisa
 
 urlpatterns = [
     path('admin/', admin.site.urls, name= 'admin'),
@@ -13,6 +13,7 @@ urlpatterns = [
     path('', home, name='url_home'),
     path('listagem/', lista, name='url_listagem'),
     path('livro_baptismo/', livro, name='url_listagem_livro'),
+    path('dashebord/', dashebord, name='url_dashebord'),
     path('export-pdf/', export_pdf_baptismo, name='export-pdf'),
     path('updateparoquia/<int:pk>/', updateparoquia, name='url_update'),
     path('updatebaptismo/<int:pk>/', updateBaptismo, name='url_update_baptismo'),

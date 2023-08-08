@@ -435,3 +435,6 @@ def listagemProvinciaEclesiastica(request):
 def delete(request, pk):
     pass
 
+def dashebord(request):
+
+    return render(request,'charts.html')
