@@ -127,12 +127,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-LOGOUT_RETIRECT_URL = 'admin'
-LOGIN_REDIRECT_URL = 'admin'
+LOGOUT_RETIRECT_URL = 'url_login'
+LOGIN_REDIRECT_URL = 'url_home'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-
-
-
-
+DATE_INPUT_FORMAT = ["%d/%m/%Y"]
 PHONENUMBER_DEFAULT_REGION = 'AO'

@@ -1,20 +1,14 @@
-import weasyprint
 from django.contrib.auth.decorators import login_required
 from chancelaria.form import BaptimoForm, ParoquiaForm,  centroForm, VigarariaForm,  ArquidioceseForm, ProvinciaForm, CongregacaoForm, ZonaForm, DioceseForm, LivroFormBaptismo,  registocamento, LivroFormCasamento
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.http import HttpResponse, FileResponse
 import datetime
-from django.http import HttpResponse
-import tempfile
-from django.template.loader import render_to_string
+
 from chancelaria.models import paroquia, provincia, provinciaeclesiastica, registoBaptismo, registoCasamento, \
     livroBaptismo, diocese,  congregacao, zona, vigararia, arquidiocese, centro
-import io
-from ctypes import *
-from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from django.http import FileResponse
+from fpdf import FPDF
 from chancelaria.filters import dioceseBusca, paroquiaBusca, baptismoBusca, casamentoBusca
+from io import BytesIO
 
 ##########################   PESQUISA     #####################
 @login_required()
@@ -31,57 +25,79 @@ def baptismoPesquisa(request):
 
 
 ############################     P D F  BAPTISMO      #########################################
-def export_pdf_baptismo(request):
-    obj = request.GET.get('obj')
-    print(obj)
-    if obj:
-        nome_pdf = registoBaptismo.objects.filter(name__icontains=obj)
-    else:
-        nome_pdf = registoBaptismo.objects.all()
+def baptismo_pdf(request, pk):
+    baptismo = get_object_or_404(registoBaptismo, pk=pk)
+    pdf = FPDF('L', 'mm', 'A4')
+    pdf.add_page()
+    pdf.set_font('Arial', '', 15)
+    pdf.set_fill_color(240, 240, 240) #cor das celulas
+    ###################################################     CABEÇALHO ####################################
 
-    context = {'baptismopdf': nome_pdf}
+    pdf.image("./chancelaria/serra.jpg", 145, 10, 40, 40)
 
-    html_index = render_to_string('export-pdf.html', context)
+    pdf.cell(10, 40, '                                                                             ', 0 , 1 , 'C',  0, 'False')
+    pdf.cell(180, 10, '                                                                                 Arquidiocese de Lunanda', 0 , 1 , 'C',  0, 'False')
+    pdf.cell(180, 5, '                                                                                  Chancelaria Arquidiocena', 0 , 1 , 'C',  0, 'False')
+    pdf.cell(180, 10, '                                                                                Assento de Baptismo Digital', 0 , 1 , 'C',  0, 'False')
+    pdf.cell(10, 6, '                                                                             ', 0, 1, 'L', 0,'False')
+    ################################################## CORPO DO ASSENTO ###################################
+    pdf.multi_cell(270, 8, f'{baptismo.data}, nesta igreja {baptismo.paroquia}, Municipio de {baptismo.municipio},'
+                           f', {baptismo.diocese} baptizei solenimente um(a) individuo do sexo {baptismo.sexo}, a quem dei o nome de {baptismo.nome} {baptismo.sobrenome}'
+                           f'e que nasceu em {baptismo.naturalidade}, no municipio da(o) {baptismo.municipio} no dia {baptismo.nascimento}.'
+                           f'\n'
+                           f'Filho de {baptismo.nomepai}, natural de {baptismo.naturalidadepai}, profissão {baptismo.profissaopai} e residente em {baptismo.resindeciapai}, estado civil {baptismo.estadocivilapai}, '
+                           f' e de {baptismo.nomemae} natural de {baptismo.naturalidademae}, profissão {baptismo.profissaomae} e residente em {baptismo.residenciamae}, estado civil {baptismo.estadocivilmae}.'
+                           f'\n'
+                           f'Neto paterno de {baptismo.netopaternohomem} e de {baptismo.netopaternomulher}, e neto materno {baptismo.netomaternohomem} e de {baptismo.netomaternomulher}.'
+                           f'\n'
+                           f'Foram Padrinhos {baptismo.padrinho}, baptizado na igreja {baptismo.padrinholocalbaptismo}, estado civil  {baptismo.padrinhoestadocivil}, profissão {baptismo.padrinhoprofissao}'
+                           f' e {baptismo.madrinha} baptizado na igreja {baptismo.madrinhalocalbaptismo}, estado civil {baptismo.madrinhaestadocivil},  profissão  {baptismo.madrinhaprofissao}')
+    pdf.set_xy(236, 10)
+    pdf.multi_cell(60, 10, f'Nº {baptismo.numero}'
+                     f'\n '
+                     f'{baptismo.nome} {baptismo.sobrenome}'
+                     f'\n'
+                     f'{baptismo.data}',1, 1)
+    #pdfimagem = FPDF('L', 'mm', 'A4')
+    #pdfimagem.add_page()
+    pdf_conteudo = pdf.output(dest='S').encode('latin1')
+    pdf_bytes = BytesIO(pdf_conteudo)
 
-    weasyprint_html = weasyprint.HTML(string=html_index, base_url='http://127.0.0.1:8000/media')
-    pdf = weasyprint_html.write_pdf(stylesheets=[weasyprint.CSS(string='body { font-family: serif} img {margin: 10px; width: 50px;}')])
-
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=Products' + str(datetime.datetime.now()) + '.pdf'
-    response['Content-Transfer-Encoding'] = 'binary'
-
-    with tempfile.NamedTemporaryFile(delete=True) as output:
-        output.write(pdf)
-        output.flush()
-        output.seek(0)
-        response.write(output.read())
-    return response
-
-
-
-def casamentopdf( request):
-    pdf = io.BytesIO()
-    canva = canvas.Canvas(pdf, pagesize=letter, bottomup=0)
-    pdfobjecto = canva.beginText()
-    pdfobjecto.setTextOrigin(inch, inch)
-    pdfobjecto.setFont('Helvetica', 16)
-
-    banco = registoCasamento.objects.all()
-    registo = []
-
-    for linha in banco:
-        registo.append(linha.nome)
-
-    for assunto in registo:
-        pdfobjecto.textLine(assunto)
+    return FileResponse(pdf_bytes, filename=f'Registo de baptismo número {pk}.pdf')
 
 
-    canva.drawText(pdfobjecto)
-    canva.showPage()
-    canva.save()
-    pdf.seek(0)
 
-    return FileResponse(pdf, as_attachment=True, filename='Registo.pdf')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @login_required()
 def lista(request):
@@ -438,3 +454,15 @@ def delete(request, pk):
 def dashebord(request):
 
     return render(request,'charts.html')
+
+
+import cloudinary
+
+cloudinary.config(
+    cloud_name="dhhtynyan",
+    api_key="685519654522669",
+    api_secret="***************************"
+)
+
+#cloudinary.uploader.upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
+ # public_id = "olympic_flag")

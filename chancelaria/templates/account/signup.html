@@ -1,23 +1,17 @@
-
 {% load i18n %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% load account %}
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% trans "Recuperar a minha Senha" %}</title>
+    <title>SB Admin 2 - Register</title>
 
     <!-- Custom fonts for this template-->
     <link href={% static "vendor/fontawesome-free/css/all.min.css" %} rel="stylesheet" type="text/css">
@@ -32,55 +26,53 @@
 
 <body class="bg-gradient-primary">
 
-<div class="container">
+    <div class="container">
 
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
                     <div class="col-lg-5 d-none d-lg-block ">
-                        <img src="{% static 'img/senha.jpeg' %}" height="620" width="510">
+                        <img src="{% static 'img/serra.png' %}" height="600" width="512">
                     </div>
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                              <br>
-                              <br>
-                              <br>
-                                <h1 class="h4 text-gray-900 mb-4">Digite o seu Email na caixa abaixo para que a Cúria Arquidiocesana possa ajuda-lo!</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Crie já a sua conta na Arquidiocesana!</h1>
                             </div>
-                            <form class="signup" id="signup_form" method="post" action="{% url 'account_logout' %}">
-                                <h1>{% trans " Recuperar a minha senha" %}</h1>
+                            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                              <p>{% blocktrans %}Já tem uma conta na Arquidiocesana? Faça o login <a href="{{ login_url }}">Aqui</a>.{% endblocktrans %}</p>
+                              {% csrf_token %}
+                                {{ form|crispy }}
+                                {% if redirect_field_value %}
+                                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                                {% endif %}
+                                <button type="submit" class="btn btn-primary btn-user btn-block">Cadastrar-se</button>
 
-                                <p>{% trans " Esqueceu a sua senha? Insira o seu endereço de Email na caixa abaixo, e nós lhe enviaremos um Email de redefinição de senha." %}</p>
-
-                                    <form method="POST" action="{% url 'account_reset_password' %}" class="password_reset">
-                                    {% csrf_token %}
-                                    {{ form|crispy }}
-                                        <input type="submit"  class="btn btn-primary btn-user btn-block" value="{% trans 'Recuperar a minha senha' %}" />
-                                    </form>
+                                <hr>
+                                <a href="index.html" class="btn btn-google btn-user btn-block">
+                                    <i class="fab fa-google fa-fw"></i> Cadastra-se com Google
+                                </a>
+                                <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                    <i class="fab fa-facebook-f fa-fw"></i> Cadastra-se com Facebook
+                                </a>
+                            </form>
                             <hr>
                             <div class="text-center">
-                                <br>
-                                <br>
-                                <br>
+                                <a class="small" href="{% url 'account_reset_password' %}">Esqueceu a senha?</a>
                             </div>
                             <div class="text-center">
-                                <p>{% blocktrans %}Se tiver algum problema ao redefinir a sua senha, não exite em nos contactar. <a href="">Cúria Arquidiocesana</a>{% endblocktrans %}</p>
                                 <a class="small" href="{% url 'account_signup' %}">Já tem uma conta? Faça o Login!</a>
                             </div>
-
                         </div>
                     </div>
                 </div>
-                </div>
             </div>
-
         </div>
 
     </div>
 
-<!-- Bootstrap core JavaScript-->
+    <!-- Bootstrap core JavaScript-->
     <script src={% static "vendor/jquery/jquery.min.js" %}></script>
     <script src={% static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}></script>
 

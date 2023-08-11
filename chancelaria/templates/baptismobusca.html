@@ -93,7 +93,7 @@
                                             </td>
                                             <td>
                                                 {% for registo in busca.qs %}
-                                                    <a href="{% url 'url_pdf_baptismo' registo.pk %}">Baixar</a>
+                                                    <a href="{% url 'baptismo_pdf' registo.pk %}">Baixar</a>
                                                 <hr>
                                                 {% endfor %}
                                             </td>

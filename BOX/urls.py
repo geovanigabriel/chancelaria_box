@@ -5,16 +5,25 @@ from chancelaria.views import home, delete, livro, arquidioceseCadastro, zonaCad
     paroquiaCadastro, vigarariaCadastro, provinciaCadastro, baptismocaCadastro, congregacaoCadastro, CadastroZona, \
     CadastroVigararia, CadastroParoquia, CadastroDiocese, listagemParoquia, listagemVigararia, listagemZona, \
     listagemDiocese, listagemArquidiocese, listagemCongregacao, listagemCentro, listagemProvinciaEclesiastica, \
-    livroCasamento, livroBaptismo,livrobaptismo, dashebord,lista,export_pdf_baptismo,casamentopdf,paroquiaBusca, updateCasamento,paroquiaPesquisa, updateBaptismo, baptismoPesquisa, registocasamento, casamentoPesquisa
+    livroCasamento, livroBaptismo,livrobaptismo, dashebord,lista,baptismo_pdf,paroquiaBusca, updateCasamento,paroquiaPesquisa, updateBaptismo, baptismoPesquisa, registocasamento, casamentoPesquisa
 
 urlpatterns = [
-    path('admin/', admin.site.urls, name= 'admin'),
+##############################   FILTRO DE INFORMAÇÃO ###############
+
+    path('pesquisa_baptismo/', baptismoPesquisa, name='url_pesquisa_baptismo'),
+    path('baptismo_pdf/<int:pk>/', baptismo_pdf, name='baptismo_pdf'),
+    path('pesquisa_baptismo/', baptismoPesquisa, name='url_pesquisa_baptismo'),
+    path('listagem_paroquia/', paroquiaPesquisa, name='url_listagem_paroquia'),
+    path('pesquisa_casamento/', casamentoPesquisa, name='url_pesquisa_casamento'),
+
+
+    path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', home, name='url_home'),
     path('listagem/', lista, name='url_listagem'),
     path('livro_baptismo/', livro, name='url_listagem_livro'),
     path('dashebord/', dashebord, name='url_dashebord'),
-    path('export-pdf/', export_pdf_baptismo, name='export-pdf'),
+
     path('updateparoquia/<int:pk>/', updateparoquia, name='url_update'),
     path('updatebaptismo/<int:pk>/', updateBaptismo, name='url_update_baptismo'),
     path('updatecasamento/<int:pk>/', updateCasamento, name='url_update_casamento'),
@@ -24,18 +33,6 @@ urlpatterns = [
     path('cadastro_baptismo/', baptismocaCadastro, name='url_baptismo'),
     path('cadastro_casamento/', registocasamento, name='url_casamento'),
 
-
-
-##############################   FILTRO DE INFORMAÇÃO ###############
-
-
-
-    path('pesquisa_baptismo/', baptismoPesquisa, name='url_pesquisa_baptismo'),
-    path('pdf_casamento/', casamentopdf, name='url_pdf_casamento'),
-    path('pdf_baptismo/<int:pk>/', export_pdf_baptismo, name='url_pdf_baptismo'),
-    path('pesquisa_baptismo/', baptismoPesquisa, name='url_pesquisa_baptismo'),
-    path('listagem_paroquia/', paroquiaPesquisa, name='url_listagem_paroquia'),
-    path('pesquisa_casamento/', casamentoPesquisa, name='url_pesquisa_casamento'),
 
 
 
@@ -69,7 +66,7 @@ urlpatterns = [
 
     # password reset
     path("password/reset/", views.password_reset, name="account_reset_password"),
-    path( "password/reset/done/", views.password_reset_done, name="account_reset_password_done"),
+    path("password/reset/done/", views.password_reset_done, name="account_reset_password_done"),
     re_path(r"^password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$", views.password_reset_from_key, name="account_reset_password_from_key"),
     path("password/reset/key/done/", views.password_reset_from_key_done, name="account_reset_password_from_key_done"),
 
