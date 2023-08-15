@@ -4,7 +4,7 @@
 
 {% block content%}
 
-{% for livro in livros %}
+{% for livro in busca %}
 
         {{livro}}
 
@@ -37,6 +37,7 @@
                                         </div>
 
                                     </form>
+                                {% if registo %}
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 
                                     <thead>
@@ -62,49 +63,48 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                {% for livro in livros %}
+                                                {% for livro in registo %}
                                                     {{livro}}
                                                 <hr>
                                                 {% endfor %}
                                             </td>
                                             <td>
-                                                {% for livro in livros %}
+                                                {% for livro in registo %}
                                                     {{livro.diocese}}
                                                 <hr>
                                                 {% endfor %}
                                             </td>
                                             <td>
-                                                {% for livro in livros %}
+                                                {% for livro in registo %}
                                                     {{livro.provincia}}
                                                 <hr>
                                                 {% endfor %}
                                             </td>
                                             <td>
-                                                {% for livro in livros %}
+                                                {% for livro in registo %}
                                                     {{livro.numero}}
                                                 <hr>
                                                 {% endfor %}
                                             </td>
                                             <td>
-                                                {% for livro in livros %}
-                                                    {{livro.datainicio}}
+                                                {% for livro in registo %}
+                                                    {{livro.datainicio|date:"d-m-y"}}
                                                 <hr>
                                                 {% endfor %}
                                             </td>
                                             <td>
-                                                {% for livro in livros %}
-                                                    {{livro.datafim}}
+                                                {% for livro in registo %}
+                                                    {{livro.datafim|date:"d-m-y"}}
                                                 <hr>
                                                 {% endfor %}
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                                {% endif %}
+                            </div></div>
                         </div>
                     </div>
-                        </div>
-  </div>
 
 
 {% endblock %}

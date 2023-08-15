@@ -7,7 +7,7 @@
 
 
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Arquivos</h6>
+                            <h4 class="m-0 font-weight-bold text-primary">Insira os dados nos campos abaixo</h4>
                         </div>
 
 
@@ -17,6 +17,7 @@
                                             {% csrf_token %}
 
                                                 <div class="form-group row">
+
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                          {{ busca.form.nome|as_crispy_field }}
                                                     </div>
@@ -52,54 +53,20 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
+                                    {% for registo in busca.qs %}
                                         <tr>
-                                            <td>
-                                                {% for registo in busca.qs %}
-
-                                                   <a href="{% url 'url_update_baptismo' registo.pk %}">{{registo.nome}}</a>
-
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
-                                            <td>
-                                                {% for registo in busca.qs %}
-                                                   <a href="{% url 'url_update_baptismo' registo.pk %}">{{registo.sobrenome}}</a>
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
-                                            <td>
-                                                {% for registo in busca.qs %}
-                                                  <a href="{% url 'url_update_baptismo' registo.pk %}">{{ registo.livro}}</a>
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
-                                            <td>
-                                                {% for registo in busca.qs %}
-                                                   <a href="{% url 'url_update_baptismo' registo.pk %}"> {{ registo.livro.diocese}}</a>
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
-                                            <td>
-                                                {% for registo in busca.qs %}
-                                                   <a href="{% url 'url_update_baptismo' registo.pk %}">{{ registo.paroquia}}</a>
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
-                                            <td>
-                                                {% for registo in busca.qs %}
-                                                    <a href="{% url 'url_update_baptismo' registo.pk %}">{{ registo.data}}</a>
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
-                                            <td>
-                                                {% for registo in busca.qs %}
-                                                    <a href="{% url 'baptismo_pdf' registo.pk %}">Baixar</a>
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
+                                            <td><a href="{% url 'url_update_baptismo' registo.pk %}">{{registo.nome}}</a></td>
+                                            <td><a href="{% url 'url_update_baptismo' registo.pk %}">{{registo.sobrenome}}</a></td>
+                                            <td><a href="{% url 'url_update_baptismo' registo.pk %}">{{ registo.livro}}</a></td>
+                                            <td><a href="{% url 'url_update_baptismo' registo.pk %}"> {{ registo.livro.diocese}}</a></td>
+                                            <td><a href="{% url 'url_update_baptismo' registo.pk %}">{{ registo.paroquia}}</a></td>
+                                            <td><a href="{% url 'url_update_baptismo' registo.pk %}">{{ registo.data|date:'d-m-y'}}</a></td>
+                                            <td><a href="{% url 'baptismo_pdf' registo.pk %}">Baixar</a></td>
                                         </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
+
                             </div>
 
 

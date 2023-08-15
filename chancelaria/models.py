@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # Create your models here.
@@ -68,7 +69,7 @@ class paroquia(models.Model):
     nome = models.CharField(max_length=150, null=False, blank=False)
     vigarariafk = models.ForeignKey(vigararia, max_length=150, null=False, blank=False, verbose_name='Vigararia', on_delete=models.PROTECT)
     congregacao = models.ForeignKey(congregacao, null=False, blank=False, verbose_name='Congreção tutelar', max_length=100, on_delete=models.PROTECT)
-    telefone = models.CharField(max_length=9, unique=True, null=True, blank=True, verbose_name='Telefone')
+    telefone = models.CharField(max_length=9, unique=True, null=True, blank=True, verbose_name='Telefone', default=' ')
     endereco = models.CharField(max_length=150, null=False, blank=False, verbose_name='Localização')
     email = models.EmailField()
     fotoperfil = models.ImageField(verbose_name='Foto de perfil', upload_to ='img_perfil_paroquia')
@@ -87,18 +88,19 @@ class centro (models.Model):
         return self.nome
 
 #########################     ARQUIVO  DA CHANCELARIA     ###################################
-class livroCasamento(models.Model):
+
+class livroCasamentoDuplicado(models.Model):
     nome = models.CharField(max_length=500, null=False, blank=False, verbose_name='Descrição')
     diocese = models.ForeignKey(diocese, null=False, blank=False, verbose_name='Diocese de proveniencia', on_delete=models.CASCADE, max_length=100)
-    paroquia = models.ForeignKey(paroquia, null=False, blank=False, verbose_name='Paróquia de proveniencia', on_delete=models.CASCADE, max_length=100)
-    provincia = models.ForeignKey(provincia, null=False, blank=False, verbose_name='Província de proveniencia', on_delete=models.CASCADE, max_length=100)
+    paroquia = models.ForeignKey(paroquia, null=False, blank=False, verbose_name='Paroquia de Proveniencia', on_delete=models.CASCADE, max_length=100)
+    provincia = models.ForeignKey(provincia, null=False, blank=False, verbose_name='Provincia de Proveniencia', on_delete=models.CASCADE, max_length=100)
     datainicio = models.DateField(null=False, blank=False, verbose_name='Data do inicio', help_text='formato da data: 2000-01-01')
-    ano = models.IntegerField(unique_for_year='Registo do Ano')
     datafim = models.DateField(null=False, blank=False, verbose_name='Data do encerramento')
-    fotoperfil = models.ImageField(width_field=150, height_field=150, verbose_name='Imagem de Capa', upload_to='imgagem_capa', help_text='Imagem Para Capa do Livro')
-
+    imagem = models.ImageField(verbose_name='Imagem de capa', upload_to='imgagem_capa', help_text='Imagem Para Capa do Livro')
+    def __str__(self):
+        return self.nome
     class Meta:
-        verbose_name = 'Registos de Casamento'
+        verbose_name = 'Livro de Registos do Casamento'
 class registoCasamento(models.Model):
 
     #################################   DADOS DO NOIVO      ########################################
@@ -124,6 +126,7 @@ class registoCasamento(models.Model):
 
     ############################ DADOS DO ASSENTO ######################################################
 
+    livro = models.ForeignKey(livroCasamentoDuplicado, max_length=100, null=False, blank=False,verbose_name='Livro', on_delete=models.DO_NOTHING)
     numero = models.IntegerField(primary_key=True, null=False, blank=False,verbose_name='Assento nº')
     folha = models.IntegerField(null=False, blank=False,verbose_name='Fl nº')
     sobrenome = models.CharField(max_length=90, null=False, blank=False, verbose_name='Apelido adoptado pelos nubentes')
@@ -140,6 +143,7 @@ class registoCasamento(models.Model):
 
     def __str__(self):
         return self.nomenoivo
+
 class livroBaptismo(models.Model):
     nome = models.CharField(max_length=500, null=False, blank=False, verbose_name='Descrição')
     numero = models.CharField(max_length=4, blank=False, null=False)
@@ -148,13 +152,13 @@ class livroBaptismo(models.Model):
     provincia = models.ForeignKey(provincia, null=False, blank=False, verbose_name='Provincia de Proveniencia', on_delete=models.CASCADE, max_length=100)
     datainicio = models.DateField(null=False, blank=False, verbose_name='Data do inicio')
     datafim = models.DateField(null=False, blank=False, verbose_name='Data do encerramento')
-    fotoperfil = models.ImageField(verbose_name='Imagem de capa', upload_to='imgagem_capa', help_text='Imagem Para Capa do Livro')
+    imagem = models.ImageField(verbose_name='Imagem de capa', upload_to='imgagem_capa', help_text='Imagem Para Capa do Livro')
 
     class Meta:
-        verbose_name = 'Livro de registos do Baptismo'
+        verbose_name = 'Livro de Baptismo'
 
     def __str__(self):
-        return self.numero
+        return self.nome
 class registoBaptismo(models.Model):
     data = models.DateField(verbose_name='Data do Baptismo')
     concelho = models.CharField(blank=True, null=True, max_length=100)
@@ -163,17 +167,18 @@ class registoBaptismo(models.Model):
     sobrenome = models.CharField(max_length=150, null=False, blank=False, verbose_name='Sobrenome')
     nascimento = models.DateField(verbose_name='Data de nascimento', blank=False, null=False)
     numero = models.CharField(max_length=4, null=False, blank=False, primary_key=True, verbose_name='Número do registo')
+    folha = models.CharField(max_length=4, null=False, blank=False, unique=True, verbose_name='Fl')
     sexo = models.CharField(choices=sexo, max_length=9, null=False, blank=False)
     naturalidade = models.ForeignKey(provincia, null=False, blank=False, max_length=50, on_delete=models.CASCADE)
     municipio =  models.CharField(max_length=100, null=True, blank=True)
     distrito = models.CharField(max_length=100, blank=True, null=True)
-    hora = models.DateTimeField(auto_now_add=True, null=True, blank=False)
+    hora = models.DateTimeField(null=True, blank=True, )
     diocese = models.ForeignKey(diocese,max_length=100, blank=True, null=True, on_delete=models.CASCADE)
     livro = models.ForeignKey(livroBaptismo, null=False, blank=False, on_delete=models.CASCADE)
     raca = models.CharField(max_length=7, null=True, blank=True, choices=raca, verbose_name='Raça')
     nomepai = models.CharField(max_length=150,  verbose_name='Nome do Pai', null=True, blank=True)
-    resindeciapai = models.CharField(max_length=150,  verbose_name='Endereço do Pai', null=True, blank=True)
-    estadocivilapai = models.CharField(choices=estadocivil, max_length=150,  verbose_name='Estado civil do Pai', null=True, blank=True)
+    residenciapai = models.CharField(max_length=150,  verbose_name='Endereço do Pai', null=True, blank=True)
+    estadocivilpai = models.CharField(choices=estadocivil, max_length=150,  verbose_name='Estado civil do Pai', null=True, blank=True)
     naturalidadepai = models.CharField(max_length=150,  verbose_name='Naturalidade do Pai', null=True, blank=True)
     profissaopai = models.CharField(max_length=150,  verbose_name='Profissão do Pai', null=True, blank=True)
     nomemae = models.CharField(max_length=150,  verbose_name='Nome da Mãe', null=True, blank=True)
@@ -188,12 +193,12 @@ class registoBaptismo(models.Model):
     padrinho = models.CharField(max_length=150, null=True, blank=True, verbose_name='Nome completo do Padrinho')
     padrinholocalbaptismo = models.CharField(max_length=150, null=True, blank=True, verbose_name='local de baptismo do Padrinho')
     padrinhoestadocivil = models.CharField(choices=estadocivil,max_length=15, null=True, blank=True, verbose_name='Estado civil do Padrinho')
-    padrinhoprofissao = models.CharField(choices=estadocivil,max_length=15, null=True, blank=True, verbose_name='Profissão do Padrinho')
+    padrinhoprofissao = models.CharField(max_length=15, null=True, blank=True, verbose_name='Profissão do Padrinho')
     madrinha = models.CharField(max_length=150, null=True, blank=True, verbose_name='Nome completo Madrinha')
     madrinhalocalbaptismo = models.CharField(max_length=150, null=True, blank=True, verbose_name='Local do baptismo da Madrinha')
     madrinhaestadocivil = models.CharField(choices=estadocivil, max_length=150, null=True, blank=True, verbose_name='Estado cilvil da Madrinha')
-    madrinhaprofissao = models.CharField(choices=estadocivil, max_length=150, null=True, blank=True, verbose_name='Profissão da Madrinha')
+    madrinhaprofissao = models.CharField(max_length=150, null=True, blank=True, verbose_name='Profissão da Madrinha')
     imagem = models.ImageField(verbose_name='Imagem do assento', upload_to='img_baptismo')
 
     class Meta:
-        verbose_name_plural = 'Registo de Baptismo'
+        verbose_name_plural = 'Assento de Baptismo'

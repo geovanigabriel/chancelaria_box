@@ -1,74 +1,62 @@
 {% extends "account/base.html" %}
+{% load crispy_forms_tags %}
 
 
 
 {% block content %}
+                        <div class="card-header py-3">
+                            <h4 class="m-0 font-weight-bold text-primary">Insira os dados nos campos abaixo</h4>
+                        </div>
+                        <div class="table-responsive">
                             <form method="GET"  enctype="multipart/form-data">
-                                {{busca.form}}
+
+                                <div class="form-group row">
+
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        {{ busca.form.nomenoivo|as_crispy_field }}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        {{ busca.form.nomenoiva|as_crispy_field }}
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Procurar por Assento</button>
+
+
                             </form>
                             <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered"  width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Noivo</th>
-                                            <th>província</th>
                                             <th>Noiva</th>
                                             <th>Diocese</th>
                                             <th>Data</th>
                                             <th>Paróquia</th>
+                                            <th>PDF</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                             <th>Noivo</th>
-                                            <th>província</th>
                                             <th>Noiva</th>
                                             <th>Diocese</th>
                                             <th>Data</th>
                                             <th>Paróquia</th>
+                                            <th>PDF</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
+                                    {% for pessoa in busca.qs %}
                                         <tr>
-                                            <td>
-                                                {% for pessoa in banco %}
-                                                    <a href="{% url 'url_update_casamento' pessoa.id %}"> {{pessoa.nomenoivo }}</a>
-                                                <hr>
-                                                {% endfor %}
-
-                                            </td>
-                                            <td>
-                                                {% for pessoa in banco %}
-                                                    {{ pessoa.diocese.provincia }}
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
-                                            <td>
-                                                {% for pessoa in banco %}
-                                                    {{pessoa.nomenoiva }}
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
-                                            <td>
-                                                {% for pessoa in banco %}
-                                                    {{pessoa.diocese }}
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
-                                            <td>
-                                                {% for pessoa in banco %}
-                                                    {{pessoa.data }}
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
-                                            <td>
-                                                {% for pessoa in banco %}
-                                                    {{pessoa.igreja }}
-                                                <hr>
-                                                {% endfor %}
-                                            </td>
+                                            <td><a href="{% url 'url_update_casamento' pessoa.pk %}">{{pessoa.nomenoivo }}</a></td>
+                                            <td><a href="{% url 'url_update_casamento' pessoa.pk%}"> {{pessoa.nomenoiva }} </a></td>
+                                            <td><a href="{% url 'url_update_casamento' pessoa.pk%}">{{pessoa.diocese }}</a></td>
+                                            <td><a href="{% url 'url_update_casamento' pessoa.pk%}"> {{pessoa.data|date:"d-m-y" }}</a></td>
+                                            <td><a href="{% url 'url_update_casamento' pessoa.pk%}">{{pessoa.igreja }}</a></td>
+                                            <td><a href="{% url 'casamento_pdf' pessoa.pk%}">Baixar </a></td>
                                         </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

@@ -1,0 +1,25 @@
+{% extends "account/base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% for livro in livros %}
+            <div class="col-md">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <img width="100%" src="{{livro.imagem.url}}">
+                            <h5 class="card-title">{{livro}} </h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{livro.nome}}</h6>
+                            <p class="card-text">informações do livro</p>
+                            <button href="" class="btn btn-info">Ver Registos</button>
+                        </div>
+                    </div>
+                <br>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

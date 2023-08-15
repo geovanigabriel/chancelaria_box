@@ -2,9 +2,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-
-
-
 {% block content %}
 {% csrf_token %}
         <form method="post" enctype="multipart/form-data">
@@ -30,7 +27,7 @@
                 {{formulariocasamento.datafim|as_crispy_field}}
               </div>
               <div class="col-sm-6">
-                {{formulariocasamento.fotoperfil|as_crispy_field}}
+                {{formulariocasamento.imagem|as_crispy_field}}
               </div>
             </div>
             {% endif %}
@@ -56,10 +53,9 @@
                 {{formulariobaptismo.datafim|as_crispy_field}}
               </div>
               <div class="col-sm-6">
-                {{formulariobaptismo.fotoperfil|as_crispy_field}}
+                {{formulariobaptismo.imagem|as_crispy_field}}
               </div>
             </div>
-
               {% endif %}
           <button type="submit" class="btn btn-primary btn-user btn-block">Salvar livro</button>
         </form>

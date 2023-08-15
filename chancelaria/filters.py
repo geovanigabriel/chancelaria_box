@@ -1,5 +1,5 @@
 import django_filters
-from chancelaria.models import paroquia,diocese, registoBaptismo, registoCasamento, livroBaptismo, livroCasamento
+from chancelaria.models import paroquia,diocese, registoBaptismo, registoCasamento, livroBaptismo, livroCasamentoDuplicado
 
 
 
@@ -20,12 +20,14 @@ class paroquiaBusca(django_filters.FilterSet):
 
 class baptismoBusca(django_filters.FilterSet):
 
+    diocese = django_filters.CharFilter(lookup_expr='icontains')
+    paroquia = django_filters.CharFilter(lookup_expr='icontains')
     nome = django_filters.CharFilter(lookup_expr='icontains')
     sobrenome = django_filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = registoBaptismo
-        fields = ['nome', 'sobrenome']
+        fields = ['diocese','paroquia','nome', 'sobrenome']
 
 
 class casamentoBusca(django_filters.FilterSet):

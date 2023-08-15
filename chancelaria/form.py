@@ -1,12 +1,12 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from chancelaria.models import paroquia
-from chancelaria.models import registoBaptismo, livroCasamento, livroBaptismo
+from chancelaria.models import registoBaptismo, livroCasamentoDuplicado, livroBaptismo
 from chancelaria.models import centro, zona, diocese, arquidiocese, vigararia, provinciaeclesiastica, congregacao, registoBaptismo, registoCasamento
-
 
 class LivroFormCasamento(ModelForm):
     class Meta:
-        model = livroCasamento
+        model = livroCasamentoDuplicado
         fields = ('__all__')
 class LivroFormBaptismo(ModelForm):
     class Meta:
@@ -67,7 +67,7 @@ class registobaptismo(ModelForm):
         fields =('__all__')
 
 
-class registocamento(ModelForm):
+class camentoForm(ModelForm):
 
     class Meta:
         model = registoCasamento

@@ -15,13 +15,17 @@
                 <div class="col-sm-6">
                     {{formulario.sobrenome|as_crispy_field }}
                 </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.sexo|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.paroquia|as_crispy_field }}
+                </div>
             </div>
-            <div class="form-group">
-                {{formulario.data|as_crispy_field }}
-            </div>
+
             <div class="form-group row">
                 <div class="col-sm-6 mb-3 mb-sm-0">
-                    {{formulario.paroquia|as_crispy_field }}
+                    {{formulario.data|as_crispy_field }}
                 </div>
                 <div class="col-sm-6">
                     {{formulario.numero|as_crispy_field }}
@@ -32,7 +36,15 @@
                     {{formulario.livro|as_crispy_field }}
                 </div>
                 <div class="col-sm-6">
-                    {{formulario.sexo|as_crispy_field }}
+                    {{formulario.folha|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.diocese|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.distrito|as_crispy_field }}
                 </div>
             </div>
             <div class="form-group row">
@@ -49,14 +61,60 @@
                 </div>
                 <div class="col-sm-6">
                     {{formulario.concelho|as_crispy_field }}
-                </div>
             </div>
             <div class="form-group row">
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.hora|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.municipio|as_crispy_field }}
+                </div>
                 <div class="col-sm-6 mb-3 mb-sm-0">
                     {{formulario.nomepai|as_crispy_field }}
                 </div>
                 <div class="col-sm-6">
+                    {{formulario.residenciapai|as_crispy_field }}
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.naturalidadepai|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.estadocivilpai|as_crispy_field }}
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.profissaopai|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
                     {{formulario.nomemae|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.residenciamae|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.estadocivilmae|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.naturalidademae|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.profissaomae|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.netopaternohomem|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.netopaternomulher|as_crispy_field }}
                 </div>
             </div>
             <div class="form-group row">
@@ -69,18 +127,32 @@
             </div>
             <div class="form-group row">
                 <div class="col-sm-6 mb-3 mb-sm-0">
-                    {{formulario.netopaternohomem|as_crispy_field }}
+                    {{formulario.padrinho|as_crispy_field }}
                 </div>
                 <div class="col-sm-6">
-                    {{formulario.netopaternomulher|as_crispy_field }}
+                    {{formulario.padrinholocalbaptismo|as_crispy_field }}
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-sm-6 mb-3 mb-sm-0">
-                    {{formulario.padrinho|as_crispy_field }}
+                    {{formulario.padrinhoestadocivil|as_crispy_field }}
                 </div>
                 <div class="col-sm-6">
+                    {{formulario.padrinhoprofissao|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
                     {{formulario.madrinha|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.madrinhalocalbaptismo|as_crispy_field }}
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.madrinhaestadocivil|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.madrinhaprofissao|as_crispy_field }}
                 </div>
             </div>
             <div class="form-group">

@@ -1,0 +1,25 @@
+{% extends "account/base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% for livro in livros %}
+            <div class="col-md">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <img width="100%" src="{{livro.imagem.url}}">
+                            <h5 class="card-title"> {{livro.diocese}} </h5>
+                            <p class="card-subtitle mb-2 text-muted"> Paróquia: {{livro.paroquia}}</p>
+                            <p class="card-text">Ano de inicio: 20{{livro.datainicio|date:'y' }} <br> Ano de Encerramento: 20{{livro.datafim|date:'y'}}</p>
+                            <a href="{% url 'url_ver_livros' livro.id %}" class="btn btn-info"> Ver Registos</a>
+                        </div>
+                    </div>
+                <br>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

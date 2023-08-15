@@ -81,18 +81,18 @@
     <h4>Dados do Registo </h4>
     <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
-            {{formulario.numero|as_crispy_field }}
+            {{formulario.igreja|as_crispy_field }}
         </div>
         <div class="col-sm-6 mb-3 mb-sm-0">
-            {{formulario.folha|as_crispy_field }}
+            {{formulario.livro|as_crispy_field }}
         </div>
     </div>
     <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
-            {{formulario.data|as_crispy_field }}
+            {{formulario.folha|as_crispy_field }}
         </div>
         <div class="col-sm-6">
-            {{formulario.sobrenome|as_crispy_field  }}
+            {{formulario.numero|as_crispy_field  }}
         </div>
     </div>
     <div class="form-group row">
@@ -100,7 +100,7 @@
             {{formulario.celebrante|as_crispy_field }}
         </div>
         <div class="col-sm-6">
-            {{formulario.igreja|as_crispy_field  }}
+            {{formulario.data|as_crispy_field  }}
         </div>
     </div>
     <div class="form-group row">
@@ -109,6 +109,12 @@
         </div>
         <div class="col-sm-6">
             {{formulario.diocese|as_crispy_field  }}
+        </div>
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            {{formulario.data|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{formulario.sobrenome|as_crispy_field  }}
         </div>
     </div>
     <div class="form-group row">
