@@ -5,7 +5,7 @@ from django.db import models
 sexo = [('Masculino', 'Masculino'), ('Femenino', 'Femenino')]
 congrega = [('Religiosa', 'Religiosa'), ('Diocesana', 'Diocesana')]
 raca = [('Negra', 'Negra'), ('Branca', 'Branca'), ('Mista', 'Mista')]
-estadocivil = [('Casado', 'Casado'), ('Soteiro(a)', 'solteiro(a)')]
+estadocivil = [('Casado(a)', 'Casado(a)'), ('Soteiro(a)', 'solteiro(a)'), ('Viùvo(a)', 'Viùvo(a)'), ('Divorciado(a)', 'Divorciado(a)')]
 ################   ESTRUTURA DA IGREJA  #############
 
 class provincia(models.Model):
@@ -35,7 +35,7 @@ class congregacao(models.Model):
     nome = models.CharField(max_length=150, null=False, blank=False, unique=True)
     telefone = models.CharField(max_length=9, unique=True, null=True, blank=True, verbose_name='Telefone')
     endereco = models.CharField(max_length=150, null=False, blank=False, verbose_name='Localização')
-    fotoperfil = models.ImageField(verbose_name='Foto de perfil', upload_to= 'imf_perfil_congregacao')
+    fotoperfil = models.FileField(verbose_name='Foto de perfil', upload_to= 'imf_perfil_congregacao')
     email = models.EmailField()
 
     class Meta:
@@ -49,7 +49,7 @@ class diocese(models.Model):
     telefone = models.CharField(max_length=9, unique=True, null=True, blank=True, verbose_name='Telefone')
     endereco = models.CharField(max_length=150, null=False, blank=False, verbose_name='Localização')
     email = models.EmailField()
-    fotoperfil = models.ImageField(verbose_name='Foto de perfil', upload_to='img_perfil_diocese')
+    fotoperfil = models.FileField(verbose_name='Foto de perfil', upload_to='img_perfil_diocese')
     def __str__(self):
         return self.nome
 class zona(models.Model):
@@ -72,7 +72,7 @@ class paroquia(models.Model):
     telefone = models.CharField(max_length=9, unique=True, null=True, blank=True, verbose_name='Telefone', default=' ')
     endereco = models.CharField(max_length=150, null=False, blank=False, verbose_name='Localização')
     email = models.EmailField()
-    fotoperfil = models.ImageField(verbose_name='Foto de perfil', upload_to ='img_perfil_paroquia')
+    fotoperfil = models.FileField(verbose_name='Foto de perfil', upload_to ='img_perfil_paroquia')
     def __str__(self):
         return self.nome
 class centro (models.Model):
@@ -82,7 +82,7 @@ class centro (models.Model):
     telefone = models.CharField(max_length=9, unique=True, null=True, blank=True, verbose_name='Telefone')
     endereco = models.CharField(max_length=150, null=False, blank=False, verbose_name='Localização')
     email = models.EmailField()
-    fotoperfil = models.ImageField(verbose_name='Foto de perfil', upload_to='img_perfil_centro')
+    fotoperfil = models.FileField(verbose_name='Foto de perfil', upload_to='img_perfil_centro')
     def __str__(self):
 
         return self.nome
@@ -96,7 +96,7 @@ class livroCasamentoDuplicado(models.Model):
     provincia = models.ForeignKey(provincia, null=False, blank=False, verbose_name='Provincia de Proveniencia', on_delete=models.CASCADE, max_length=100)
     datainicio = models.DateField(null=False, blank=False, verbose_name='Data do inicio', help_text='formato da data: 2000-01-01')
     datafim = models.DateField(null=False, blank=False, verbose_name='Data do encerramento')
-    imagem = models.ImageField(verbose_name='Imagem de capa', upload_to='imgagem_capa', help_text='Imagem Para Capa do Livro')
+    imagem = models.FileField(verbose_name='Imagem de capa', upload_to='imgagem_capa', help_text='Imagem Para Capa do Livro')
     def __str__(self):
         return self.nome
     class Meta:
@@ -106,7 +106,7 @@ class registoCasamento(models.Model):
     #################################   DADOS DO NOIVO      ########################################
     nomenoivo = models.CharField(max_length=200, null=False, blank=False, verbose_name='Nome Completo do noivo')
     nascimentonoivo = models.DateField(verbose_name='Data de nascimento')
-    estadocivilnoivo = models.CharField(null=False, blank=False, choices=estadocivil, verbose_name='Estado Civil', max_length=10)
+    estadocivilnoivo = models.CharField(null=False, blank=False, choices=estadocivil, verbose_name='Estado Civil', max_length=14)
     profissaonoivo = models.CharField(null=False, blank=False, verbose_name='Profissão', max_length=100)
     naturalidadenoivo = models.CharField(null=False, blank=False, verbose_name='Natural', max_length=200)
     provincianoivo = models.ForeignKey(provincia, null=False, blank=False, verbose_name='Provincia', on_delete=models.CASCADE, max_length=50)
@@ -117,7 +117,7 @@ class registoCasamento(models.Model):
 
     nomenoiva = models.CharField(max_length=200, null=False, blank=False, verbose_name='Nome Completo do noivo')
     nascimentonoiva = models.DateField(verbose_name='Data de nascimento')
-    estadocivilnoiva = models.CharField(null=False, blank=False, choices=estadocivil, verbose_name='Estado Civil', max_length=10)
+    estadocivilnoiva = models.CharField(null=False, blank=False, choices=estadocivil, verbose_name='Estado Civil', max_length=14)
     profissaonoiva = models.CharField(null=False, blank=False, verbose_name='Profissão', max_length=100)
     naturalidadenoiva = models.CharField(null=False, blank=False, verbose_name='Natural', max_length=200)
     provincianoiva = models.ForeignKey(provincia, null=False, blank=False, verbose_name='Provincia', on_delete=models.CASCADE, max_length=50, related_name='Provincia')
@@ -134,8 +134,8 @@ class registoCasamento(models.Model):
     igreja = models.ForeignKey(paroquia, on_delete=models.CASCADE,max_length=200, null=False, blank=False, verbose_name='Igreja')
     municipio = models.CharField(max_length=200, null=False, blank=False, verbose_name='Municipio')
     diocese = models.ForeignKey(diocese, null=False, blank=False, on_delete=models.PROTECT)
-    imagemfrente = models.ImageField(null=False, blank=False, upload_to='img_assento_casamento', verbose_name='Imagem Frente')
-    imagemverso = models.ImageField(null=False, blank=False, upload_to='img_assento_casamento', verbose_name='Imagem Verso')
+    imagemfrente = models.FileField(null=False, blank=False, upload_to='img_assento_casamento', verbose_name='Imagem Frente')
+    imagemverso = models.FileField(null=False, blank=False, upload_to='img_assento_casamento', verbose_name='Imagem Verso')
     data = models.DateField(null=False, blank=False, verbose_name='Data do matrimonio')
 
     class Meta:
@@ -152,7 +152,7 @@ class livroBaptismo(models.Model):
     provincia = models.ForeignKey(provincia, null=False, blank=False, verbose_name='Provincia de Proveniencia', on_delete=models.CASCADE, max_length=100)
     datainicio = models.DateField(null=False, blank=False, verbose_name='Data do inicio')
     datafim = models.DateField(null=False, blank=False, verbose_name='Data do encerramento')
-    imagem = models.ImageField(verbose_name='Imagem de capa', upload_to='imgagem_capa', help_text='Imagem Para Capa do Livro')
+    imagem = models.FileField(verbose_name='Imagem de capa', upload_to='imgagem_capa', help_text='Imagem Para Capa do Livro')
 
     class Meta:
         verbose_name = 'Livro de Baptismo'
@@ -182,7 +182,7 @@ class registoBaptismo(models.Model):
     naturalidadepai = models.CharField(max_length=150,  verbose_name='Naturalidade do Pai', null=True, blank=True)
     profissaopai = models.CharField(max_length=150,  verbose_name='Profissão do Pai', null=True, blank=True)
     nomemae = models.CharField(max_length=150,  verbose_name='Nome da Mãe', null=True, blank=True)
-    estadocivilmae = models.CharField(choices=estadocivil,max_length=150,  verbose_name='Estado civil da Mãe', null=True, blank=True)
+    estadocivilmae = models.CharField(choices=estadocivil, max_length=150,  verbose_name='Estado civil da Mãe', null=True, blank=True)
     residenciamae = models.CharField(max_length=150,  verbose_name='Endereço da Mãe', null=True, blank=True)
     naturalidademae = models.CharField(max_length=150,  verbose_name='Naturalidade da Mãe', null=True, blank=True)
     profissaomae = models.CharField(max_length=150,  verbose_name='Profissão da Mãe', null=True, blank=True)
@@ -198,7 +198,7 @@ class registoBaptismo(models.Model):
     madrinhalocalbaptismo = models.CharField(max_length=150, null=True, blank=True, verbose_name='Local do baptismo da Madrinha')
     madrinhaestadocivil = models.CharField(choices=estadocivil, max_length=150, null=True, blank=True, verbose_name='Estado cilvil da Madrinha')
     madrinhaprofissao = models.CharField(max_length=150, null=True, blank=True, verbose_name='Profissão da Madrinha')
-    imagem = models.ImageField(verbose_name='Imagem do assento', upload_to='img_baptismo')
+    imagem = models.FileField(verbose_name='Imagem do assento', upload_to='img_baptismo')
 
     class Meta:
         verbose_name_plural = 'Assento de Baptismo'

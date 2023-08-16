@@ -1,6 +1,9 @@
 {% load i18n %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load account socialaccount %}
+{% load socialaccount %}
+{% providers_media_js %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,12 +53,13 @@
                                 <button type="submit" class="btn btn-primary btn-user btn-block">Cadastrar-se</button>
 
                                 <hr>
-                                <a href="index.html" class="btn btn-google btn-user btn-block">
+                                <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-google btn-user btn-block">
                                     <i class="fab fa-google fa-fw"></i> Cadastra-se com Google
                                 </a>
-                                <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                <a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-facebook btn-user btn-block">
                                     <i class="fab fa-facebook-f fa-fw"></i> Cadastra-se com Facebook
                                 </a>
+
                             </form>
                             <hr>
                             <div class="text-center">
@@ -81,6 +85,8 @@
 
     <!-- Custom scripts for all pages-->
     <script src={% static "js/sb-admin-2.min.js" %}></script>
+
+
 
 </body>
 

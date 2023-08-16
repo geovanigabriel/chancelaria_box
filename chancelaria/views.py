@@ -403,15 +403,15 @@ def baptismo_pdf(request, pk):
     pdf.set_fill_color(0, 0, 0) #cor das celulas
     ###################################################     CABEÇALHO ####################################
     pdf.image("chancelaria/templates/verdade.jpeg", 1, 40, 210, 295)
-    pdf.image("./chancelaria/verdadebeleza.jpeg", 84, 0, 50, 50)
+    pdf.image("./chancelaria/verdadebeleza.jpeg", 84, 0, 50, 55)
 
 
-    pdf.cell(10, 25, '                                                           ', 0 , 1 , 'C',  0, 'False')
-    pdf.cell(180, 10, '                 ARQUIDIOCESE DE LUANDA', 0 , 1 , 'C',  0, 'False')
+    pdf.cell(10, 30, '                                                           ', 0 , 1 , 'C',  0, 'False')
+    pdf.cell(180, 7, '                 ARQUIDIOCESE DE LUANDA', 0 , 1 , 'C',  0, 'False')
     pdf.cell(180, 5, '                CHANCELARIA ARQUIDIOCESANA', 0 , 1 , 'C',  0, 'False')
     pdf.cell(180, 10, '                  ASSENTO DE BAPTISMO DIGITAL', 0 , 1 , 'C',  0, 'False')
     pdf.cell(180, 10, '                  ', 0 , 1 , 'C',  0, 'False')
-    pdf.cell(180, 10, '               ====== CÚRIA ARQUIDIOCESANA ======', 0 , 1 , 'C',  0, 'False')
+    pdf.cell(180, 8, '                 ====== CÚRIA ARQUIDIOCESANA ======', 0 , 1 , 'C',  0, 'False')
     ################################################## CORPO DO ASSENTO ###################################
     pdf.multi_cell(190, 10, f'{baptismo.data}, nesta igreja {baptismo.paroquia}, Municipio de {baptismo.municipio},'
                            f' {baptismo.diocese} baptizei solenimente um(a) individuo do sexo {baptismo.sexo}, a quem dei o nome de {baptismo.nome} {baptismo.sobrenome}'
@@ -434,38 +434,37 @@ def baptismo_pdf(request, pk):
                      f'{baptismo.nome.split()[0]} {baptismo.sobrenome}'
                      f'\n'
                      f'{baptismo.data}', 1, 1)
-    #pdfimagem = FPDF('L', 'mm', 'A4')
-    #pdfimagem.add_page()
+
     pdf_conteudo = pdf.output(dest='S').encode('latin1')
     pdf_bytes = BytesIO(pdf_conteudo)
 
     return FileResponse(pdf_bytes, filename=f'Registo de baptismo número {pk}.pdf')
 def casamento_pdf(request, pk):
-    casamento = get_object_or_404(registoCasamento, pk=pk)
+    casamento = get_object_or_404(registoBaptismo, pk=pk)
     pdf_casamento = FPDF('P', 'mm', 'A4')
     pdf_casamento.add_page()
-    pdf_casamento.set_font('Arial', 'B', 12)
-    pdf_casamento.set_fill_color(240, 240, 240) #cor das celulas
+    pdf_casamento.set_font('Arial', '', 12)
+    pdf_casamento.set_fill_color(0, 0, 0)  # cor das celulas
     ###################################################     CABEÇALHO ####################################
+    pdf_casamento.image("chancelaria/templates/verdade.jpeg", 1, 40, 210, 295)
+    pdf_casamento.image("./chancelaria/verdadebeleza.jpeg", 84, 0, 50, 55)
 
-    pdf_casamento.image("./chancelaria/serrra.jpg", 1, 1, 210, 297)
-
-    pdf_casamento.cell(10, 40, '                                                                             ', 0 , 1 , 'C',  0, 'False')
-    pdf_casamento.cell(180, 10, '                                                                                 ARQUIDIOCESE DE LUANDA', 0 , 1 , 'C',  0, 'False')
-    pdf_casamento.cell(180, 5, '                                                                                 CHANCELARIA ARQUIDIOCESANA', 0 , 1 , 'C',  0, 'False')
-    pdf_casamento.cell(180, 10, '                                                                                   ASSENTO DE BAPTISMO DIGITAL', 0 , 1 , 'C',  0, 'False')
-    pdf_casamento.cell(180, 10, '                                                                                  ====== CÚRIA ARQUIDIOCESANA ======', 0 , 1 , 'C',  0, 'False')
-    pdf_casamento.cell(10, 6, '                                                                             ', 0, 1, 'L', 0,'False')
+    pdf_casamento.cell(10, 30, '                                                           ', 0, 1, 'C', 0, 'False')
+    pdf_casamento.cell(180, 7, '                 ARQUIDIOCESE DE LUANDA', 0, 1, 'C', 0, 'False')
+    pdf_casamento.cell(180, 5, '                CHANCELARIA ARQUIDIOCESANA', 0, 1, 'C', 0, 'False')
+    pdf_casamento.cell(180, 10, '                  ASSENTO DE BAPTISMO DIGITAL', 0, 1, 'C', 0, 'False')
+    pdf_casamento.cell(180, 10, '                  ', 0, 1, 'C', 0, 'False')
+    pdf_casamento.cell(180, 8, '                 ====== CÚRIA ARQUIDIOCESANA ======', 0, 1, 'C', 0, 'False')
     ################################################## CORPO DO ASSENTO ###################################
-    pdf_casamento.multi_cell(210, 297, f'Aos {casamento.data} dias do mês de {casamento.data} de {casamento.data}, '
-                            f'as {casamento.data} na igreja da paróquia {casamento.data}, em que é o paroco' )
-
-    pdf_casamento.set_xy(236, 10)
+    pdf_casamento.multi_cell(190, 10, 'huh')
+    pdf_casamento.set_xy(2, 10)
     pdf_casamento.multi_cell(58, 10, f'Nº {casamento.numero}'
-                    f'\n'
-                    f'Fl nº{casamento.folha}'
-                    f'\n'
-                    f'{casamento.data}', 1, 1)
+                           f'\n'
+                           f'Fl {casamento.folha}'
+                           f'\n'
+                           f'{casamento.nome.split()[0]} {casamento.sobrenome}'
+                           f'\n'
+                           f'{casamento.data}', 1, 1)
 
     pdf_conteudo = pdf_casamento.output(dest='S').encode('latin1')
     pdf_bytes = BytesIO(pdf_conteudo)
