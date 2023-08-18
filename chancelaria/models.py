@@ -207,10 +207,10 @@ class registoBaptismo(models.Model):
 class pessoa(models.Model):
     from django_countries.fields import CountryField
 
-    nome = models.CharField(max_length=200, null= True, blank=True, default='Insira o seu nome', help_text='Isso ajudará os seu amigos na pesquisa', verbose_name='Nome completo')
-    pai = models.CharField(max_length=200, null= True, blank=True, default='Insira o nome do seu progenitor', help_text='Esta campo fica pode ser util', verbose_name= 'Pai' )
-    mae = models.CharField(max_length=200, null= True, blank=True, default='Insira o nome da sua progenitora', help_text='Esta campo fica pode ser util', verbose_name='Mãe')
-    bi = models.CharField(max_length=200, null= False, blank=False, primary_key=True, default='Insira o nome da sua progenitora', help_text='Ela servirá como o seu identidicador')
+    nome = models.CharField(max_length=200, null= True, blank=True, default=' ', help_text='Isso ajudará os seu amigos na pesquisa', verbose_name='Nome completo')
+    pai = models.CharField(max_length=200, null= True, blank=True, default=' ', help_text='Esta campo fica pode ser util', verbose_name= 'Pai' )
+    mae = models.CharField(max_length=200, null= True, blank=True, default=' ', help_text='Esta campo fica pode ser util', verbose_name='Mãe')
+    bi = models.CharField(max_length=200, null= False, blank=False, primary_key=True, default=' ', help_text='Ela servirá como o seu identidicador')
     endereco = models.CharField(max_length=200, null= True, blank=True, default=' ', verbose_name='Endereço')
     provincia = models.ForeignKey(provincia, max_length=200, null= True, blank=True, default=' ', verbose_name='Província', on_delete=models.DO_NOTHING)
     nurural = models.CharField(max_length=200, null= True, blank=True, default=' ', verbose_name='Província, Cidade ou Estado')
