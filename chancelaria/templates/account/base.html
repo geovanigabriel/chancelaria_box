@@ -34,10 +34,10 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'url_home'%}">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                <div class="sidebar-brand-icon rotate-n-5" x>
+                    <img src="{% static 'img/logobox.png' %}" height="45" width="45">
                 </div>
-                <div class="sidebar-brand-text mx-3">Arquidiocesana</div>
+                <div >Arquidiocesana</div>
             </a>
 
             <!-- Divider -->
@@ -68,7 +68,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Customizar:</h6>
-                        <a class="collapse-item" href="buttons.html">Preencher perfil</a>
+                        <a class="collapse-item" href="{% url 'url_perfil' %}">Preencher perfil</a>
                         <a class="collapse-item" href="cards.html">Alterar a senha</a>
                         <a class="collapse-item" href="cards.html">Privacidade</a>
                     </div>
@@ -338,7 +338,7 @@
                             <!-- Menu suspenso - Informações do usuário -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{% url 'url_perfil'%}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Perfil
                                 </a>

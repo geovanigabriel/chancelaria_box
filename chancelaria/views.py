@@ -3,14 +3,15 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
-from chancelaria.form import BaptimoForm, ParoquiaForm,  centroForm, VigarariaForm,  ArquidioceseForm, ProvinciaForm, CongregacaoForm, ZonaForm, DioceseForm, LivroFormBaptismo,  camentoForm, LivroFormCasamento
+from chancelaria.form import BaptimoForm, ParoquiaForm, centroForm, VigarariaForm, ArquidioceseForm, ProvinciaForm, \
+    CongregacaoForm, ZonaForm, DioceseForm, LivroFormBaptismo, camentoForm, LivroFormCasamento, pessoaForm
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import HttpResponse, FileResponse
 from chancelaria.models import paroquia, provincia, provinciaeclesiastica, registoBaptismo, registoCasamento, \
     livroBaptismo, diocese, congregacao, zona, vigararia, arquidiocese, centro, \
-    livroCasamentoDuplicado
+    livroCasamentoDuplicado, pessoa
 from fpdf import FPDF
-from chancelaria.filters import dioceseBusca, paroquiaBusca, baptismoBusca, casamentoBusca
+from chancelaria.filters import dioceseBusca, paroquiaBusca, baptismoBusca, casamentoBusca, centroBusca
 from io import BytesIO
 from datetime import date
 
@@ -72,23 +73,14 @@ def dioceselista(request):
 def livro_baptismo(request):
     banco = livroBaptismo.objects.all()
     context = {'livros': banco}
-    return (render(request, 'duplicados.html', context))
-
-@login_required()
-def livro_baptismo(request, pk):
-    banco = livroBaptismo.objects.get(pk=pk)
-    context = {'livros': banco}
     return render(request, 'duplicados.html', context)
 
 
-
-
-
-
-
 #################################      PERFIL      #####################################################
-def perfil (request):
-    pass
+def perfil(request):
+    form = pessoaForm()
+    context = {'pessoa': form}
+    return render(request, 'perfil.html', context)
 
 
 
@@ -110,7 +102,8 @@ def updateBaptismo(request, pk):
         formulario.save()
         return redirect(home)
     context = {
-        'formulario': formulario
+        'formulario': formulario,
+        'registo': banco
     }
     return render(request, 'baptismo.html', context)
 
@@ -285,13 +278,7 @@ def listagemArquidiocese(request):
     }
     return render(request, 'listagem.html', context)
 
-@login_required()
-def listagemCentro(request):
-    banco = centro.objects.all()
-    context = {
-        'banco': banco
-    }
-    return render(request, 'listagem.html', context)
+
 
 @login_required()
 def listagemParoquia(request):
@@ -381,12 +368,7 @@ def baptismoPesquisa(request):
     banco = registoBaptismo.objects.all()
     bancoprovincia = provincia.objects.all()
     busca = baptismoBusca(request.GET, queryset=banco)
-
-    paginator = Paginator(banco, 2)  # mostra 3 produtos por pagina
-    page_number = request.GET.get('page')
-    paginacao = paginator.get_page(page_number)
     context = {'banco': banco,
-               'paginação': paginacao,
                'busca': busca,
                'provincia': bancoprovincia
                }
@@ -428,17 +410,17 @@ def baptismo_pdf(request, pk):
                            f' e {baptismo.madrinha} baptizado na igreja {baptismo.madrinhalocalbaptismo}, {baptismo.madrinhaestadocivil},  {baptismo.madrinhaprofissao}')
     pdf.set_xy(2, 10)
     pdf.multi_cell(58, 10, f'Nº {baptismo.numero}'
-                     f'\n'
+                    f'\n'
                     f'Fl {baptismo.folha}'
                     f'\n'  
-                     f'{baptismo.nome.split()[0]} {baptismo.sobrenome}'
-                     f'\n'
-                     f'{baptismo.data}', 1, 1)
+                    f'{baptismo.nome.split()[0]} {baptismo.sobrenome}'
+                    f'\n'
+                    f'{baptismo.data}', 1, 1)
 
     pdf_conteudo = pdf.output(dest='S').encode('latin1')
     pdf_bytes = BytesIO(pdf_conteudo)
 
-    return FileResponse(pdf_bytes, filename=f'Registo de baptismo número {pk}.pdf')
+    return FileResponse( pdf_bytes, filename=f'Ref/{baptismo.diocese}/{baptismo.paroquia}/{pk}.pdf')
 def casamento_pdf(request, pk):
     casamento = get_object_or_404(registoBaptismo, pk=pk)
     pdf_casamento = FPDF('P', 'mm', 'A4')
@@ -478,10 +460,19 @@ def paroquiaPesquisa(request):
     paroquiabusca = paroquiaBusca(request.GET, queryset=banco)
 
     context = {
-        'banco': banco,
+
         'busca': paroquiabusca,
     }
-    return render(request, 'paroquiabusca.html', context)
+    return (render(request, 'paroquiabusca.html', context))
+@login_required()
+def centroPesquisa(request):
+    banco = centro.objects.all()
+    centrobusca = centroBusca(request.GET, queryset=banco)
+    context = {
+        'banco': banco,
+        'busca': centrobusca,
+        }
+    return render(request, 'listagemcentro.html', context)
 
 @login_required()
 def updateparoquia(request, pk):

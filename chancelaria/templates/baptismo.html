@@ -158,8 +158,12 @@
             <div class="form-group">
                 {{formulario.imagem|as_crispy_field }}
             </div>
-            <button type="submit" class="btn btn-primary btn-user btn-block">Salvar Registo</button>
-
+                {% if registo %}
+                    <a href="{% url 'baptismo_pdf' registo.pk %}" class="btn btn-primary btn-user btn-block">Baixar</a>
+                 {% else %}
+                <button type="submit" class="btn btn-primary btn-user btn-block">Salvar Registo</button>
+                {% endif %}
+            </div>
     </div>
 </form>
 {% endblock %}

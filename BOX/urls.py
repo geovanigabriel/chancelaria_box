@@ -3,11 +3,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 from allauth.account import views
-from chancelaria.views import home, delete, livro_baptismo, arquidioceseCadastro, zonaCadastro, centroCadastro, dioceseCadastro, updateparoquia, \
+from chancelaria.views import home, delete, livro_baptismo, arquidioceseCadastro, zonaCadastro, centroCadastro, \
+    dioceseCadastro, updateparoquia, \
     paroquiaCadastro, vigarariaCadastro, provinciaCadastro, baptismocaCadastro, congregacaoCadastro, CadastroZona, \
     CadastroVigararia, CadastroParoquia, CadastroDiocese, listagemParoquia, listagemVigararia, listagemZona, \
-    listagemDiocese, listagemArquidiocese, listagemCongregacao, listagemCentro, listagemProvinciaEclesiastica,\
-    CadastrolivroCasamento, livroBaptismo, casamento_pdf,ver_livro,ListaLivroCasamento,livrobaptismo, dashebord, dioceselista, baptismo_pdf, paroquiaBusca, updateCasamento, paroquiaPesquisa, updateBaptismo, baptismoPesquisa, registocasamento, casamentoPesquisa
+    listagemDiocese, listagemArquidiocese, listagemCongregacao, centroPesquisa, listagemProvinciaEclesiastica, \
+    CadastrolivroCasamento, livroBaptismo, casamento_pdf, ver_livro, ListaLivroCasamento, livrobaptismo, dashebord, \
+    dioceselista, baptismo_pdf, paroquiaBusca, updateCasamento, paroquiaPesquisa, updateBaptismo, baptismoPesquisa, \
+    registocasamento, casamentoPesquisa, perfil
 
 urlpatterns = [
 
@@ -27,8 +30,10 @@ urlpatterns = [
     path('', home, name='url_home'),
     path('ver_livro/<int:pk>/', ver_livro, name='url_ver_livros'),
     path('listagem_diocese/', dioceselista, name='url_listagem'),
+    path('listagem_centro/', centroPesquisa, name='url_listagem_centro'),
     path('lista_livro_baptismo/', livro_baptismo, name='url_listagem_livro'),
     path('dashebord/', dashebord, name='url_dashebord'),
+    path('perfil/', perfil, name='url_perfil'),
 
     ########   UPDATE ###############
 

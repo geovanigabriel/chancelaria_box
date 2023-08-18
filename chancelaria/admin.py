@@ -1,7 +1,7 @@
 from django.contrib import admin
 from chancelaria.models import registoBaptismo, registoCasamento, \
     livroBaptismo, paroquia, provincia, provinciaeclesiastica, diocese, arquidiocese, vigararia, centro, \
-    congregacao, zona,  livroCasamentoDuplicado
+    congregacao, zona, livroCasamentoDuplicado, pessoa
 
 # Register your models here.
 
@@ -12,6 +12,8 @@ admin.site.register(provincia)
 admin.site.register(paroquia)
 admin.site.register(livroCasamentoDuplicado)
 admin.site.register(registoCasamento)
+admin.site.register(centro)
+admin.site.register(pessoa)
 admin.site.register(diocese)
 admin.site.register(arquidiocese)
 admin.site.register(vigararia)

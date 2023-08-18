@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'crispy_bootstrap4',
     'django_extensions',
-    'proxypay'  ,
+    'django_countries',
+    'proxypay',
 
 ]
 SITE_ID = 1

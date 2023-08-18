@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from chancelaria.models import paroquia
+from chancelaria.models import paroquia, pessoa
 from chancelaria.models import registoBaptismo, livroCasamentoDuplicado, livroBaptismo
 from chancelaria.models import centro, zona, diocese, arquidiocese, vigararia, provinciaeclesiastica, congregacao, registoBaptismo, registoCasamento
 
@@ -72,4 +72,9 @@ class camentoForm(ModelForm):
     class Meta:
         model = registoCasamento
         fields =('__all__')
+
+class pessoaForm(ModelForm):
+    class Meta:
+        model = pessoa
+        fields = ('__all__')
 
