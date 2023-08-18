@@ -1,0 +1,13 @@
+{% extends "account/base.html" %}
+
+
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+    {% if user.nome == '' %}
+        {{pessoa.as_p}}
+    {% endif %}
+<button type="submit">Salvar Perfil</button>
+</form>
+{% endblock %}

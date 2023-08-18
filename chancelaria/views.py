@@ -2,7 +2,7 @@ import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-
+import qrcode
 from chancelaria.form import BaptimoForm, ParoquiaForm, centroForm, VigarariaForm, ArquidioceseForm, ProvinciaForm, \
     CongregacaoForm, ZonaForm, DioceseForm, LivroFormBaptismo, camentoForm, LivroFormCasamento, pessoaForm
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
@@ -78,9 +78,17 @@ def livro_baptismo(request):
 
 #################################      PERFIL      #####################################################
 def perfil(request):
-    form = pessoaForm()
-    context = {'pessoa': form}
+    banco = pessoa.objects.all()
+    context = {'pessoa': banco}
     return render(request, 'perfil.html', context)
+
+def preencherPerfil(request):
+    form = pessoaForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        return redirect(home)
+    context = {'pessoa': form}
+    return render(request, 'preencherperfil.html', context)
 
 
 
@@ -124,7 +132,7 @@ def casamentoPesquisa(request):
 
 @login_required(login_url='account_login')
 def registocasamento(request):
-    formulario = camentoForm(request.POST or None, request.FILES)
+    formulario = camentoForm(request.POST, request.FILES)
     if formulario.is_valid():
         formulario.save()
         return redirect(casamentoPesquisa)
@@ -190,7 +198,7 @@ def vigarariaCadastro(request):
 @login_required()
 def arquidioceseCadastro(request):
 
-    formulario = ArquidioceseForm(request.POST or None, request.FILES )
+    formulario = ArquidioceseForm(request.POST , request.FILES )
     if formulario.is_valid():
         formulario.save()
         return redirect(home)
@@ -203,7 +211,7 @@ def arquidioceseCadastro(request):
 @login_required()
 def congregacaoCadastro(request):
 
-    formulario = CongregacaoForm(request.POST or None, request.FILES )
+    formulario = CongregacaoForm(request.POST, request.FILES )
     if formulario.is_valid():
         formulario.save()
         return redirect(home)
@@ -238,7 +246,7 @@ def livrobaptismo(request):
 
 @login_required()
 def CadastroVigararia(request):
-    vigararia = VigarariaForm(request.POST or None)
+    vigararia = VigarariaForm(request.POST)
     if vigararia.is_valid():
         vigararia.save()
         return redirect(home)
@@ -249,7 +257,7 @@ def CadastroVigararia(request):
 
 @login_required()
 def CadastroDiocese(request):
-    diocese = DioceseForm(request.POST or None)
+    diocese = DioceseForm(request.POST)
     if diocese.is_valid():
         diocese.save()
         return redirect(home)
@@ -260,7 +268,7 @@ def CadastroDiocese(request):
 
 @login_required()
 def CadastroZona(request):
-    zona = ZonaForm(request.POST or None)
+    zona = ZonaForm(request.POST)
 
     if zona.is_valid():
         zona.save()
@@ -350,7 +358,7 @@ def home(request):
 
 @login_required()
 def CadastroParoquia(request):
-    paroquia = ParoquiaForm(request.POST or None)
+    paroquia = ParoquiaForm(request.POST)
     if paroquia.is_valid():
         paroquia.save()
         return redirect(home)
@@ -375,9 +383,12 @@ def baptismoPesquisa(request):
     return render(request, 'baptismobusca.html', context)
 
 
+mes = ['', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+       'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
 ############################     P D F  BAPTISMO      #########################################
 def baptismo_pdf(request, pk):
+    from num2words import num2words
     baptismo = get_object_or_404(registoBaptismo, pk=pk)
     pdf = FPDF('P', 'mm', 'A4')
     pdf.add_page()
@@ -386,6 +397,9 @@ def baptismo_pdf(request, pk):
     ###################################################     CABEÇALHO ####################################
     pdf.image("chancelaria/templates/verdade.jpeg", 1, 40, 210, 295)
     pdf.image("./chancelaria/verdadebeleza.jpeg", 84, 0, 50, 55)
+    validacaoQRCODE = qrcode.make(f'qrcode_de_validão_de Assneto de casamento de {baptismo.nome}')
+    validacaoQRCODE.save(f'Assento_casamento.png')
+    pdf.image('Assento_casamento.png', 84, 245, 35, 35)
 
 
     pdf.cell(10, 30, '                                                           ', 0 , 1 , 'C',  0, 'False')
@@ -395,7 +409,13 @@ def baptismo_pdf(request, pk):
     pdf.cell(180, 10, '                  ', 0 , 1 , 'C',  0, 'False')
     pdf.cell(180, 8, '                 ====== CÚRIA ARQUIDIOCESANA ======', 0 , 1 , 'C',  0, 'False')
     ################################################## CORPO DO ASSENTO ###################################
-    pdf.multi_cell(190, 10, f'{baptismo.data}, nesta igreja {baptismo.paroquia}, Municipio de {baptismo.municipio},'
+    datadia = baptismo.data.day
+    dia = num2words(datadia, lang='pt-br')
+    datames = baptismo.data.month
+    dataano = baptismo.data.year
+    ano = num2words(dataano, lang='pt-br')
+
+    pdf.multi_cell(190, 10, f'{dia} {mes[datames]} {ano}, nesta igreja {baptismo.paroquia}, Municipio de {baptismo.municipio},'
                            f' {baptismo.diocese} baptizei solenimente um(a) individuo do sexo {baptismo.sexo}, a quem dei o nome de {baptismo.nome} {baptismo.sobrenome}'
                            f'e que nasceu em {baptismo.naturalidade}, no municipio da(o) {baptismo.municipio} no dia {baptismo.nascimento}.'
                            f'\n'
@@ -422,7 +442,7 @@ def baptismo_pdf(request, pk):
 
     return FileResponse( pdf_bytes, filename=f'Ref/{baptismo.diocese}/{baptismo.paroquia}/{pk}.pdf')
 def casamento_pdf(request, pk):
-    casamento = get_object_or_404(registoBaptismo, pk=pk)
+    casamento = get_object_or_404(registoCasamento, pk=pk)
     pdf_casamento = FPDF('P', 'mm', 'A4')
     pdf_casamento.add_page()
     pdf_casamento.set_font('Arial', '', 12)
@@ -430,6 +450,10 @@ def casamento_pdf(request, pk):
     ###################################################     CABEÇALHO ####################################
     pdf_casamento.image("chancelaria/templates/verdade.jpeg", 1, 40, 210, 295)
     pdf_casamento.image("./chancelaria/verdadebeleza.jpeg", 84, 0, 50, 55)
+    validacaoQRCODE = qrcode.make(f'qrcode_de_validão_de Assneto de casamento de {casamento.nomenoivo}')
+    validacaoQRCODE.save(f'Assento_casamento.png')
+    pdf_casamento.image('Assento_casamento.png', 84, 245, 35, 35)
+
 
     pdf_casamento.cell(10, 30, '                                                           ', 0, 1, 'C', 0, 'False')
     pdf_casamento.cell(180, 7, '                 ARQUIDIOCESE DE LUANDA', 0, 1, 'C', 0, 'False')
@@ -444,9 +468,10 @@ def casamento_pdf(request, pk):
                            f'\n'
                            f'Fl {casamento.folha}'
                            f'\n'
-                           f'{casamento.nome.split()[0]} {casamento.sobrenome}'
+                           f'{casamento.nomenoivo.split()[0]} {casamento.nomenoiva}'
                            f'\n'
                            f'{casamento.data}', 1, 1)
+
 
     pdf_conteudo = pdf_casamento.output(dest='S').encode('latin1')
     pdf_bytes = BytesIO(pdf_conteudo)

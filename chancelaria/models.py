@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-
 # Create your models here.
 sexo = [('Masculino', 'Masculino'), ('Femenino', 'Femenino')]
 congrega = [('Religiosa', 'Religiosa'), ('Diocesana', 'Diocesana')]
@@ -212,10 +211,11 @@ class pessoa(models.Model):
     mae = models.CharField(max_length=200, null= True, blank=True, default=' ', help_text='Esta campo fica pode ser util', verbose_name='Mãe')
     bi = models.CharField(max_length=200, null= False, blank=False, primary_key=True, default=' ', help_text='Ela servirá como o seu identidicador')
     endereco = models.CharField(max_length=200, null= True, blank=True, default=' ', verbose_name='Endereço')
-    provincia = models.ForeignKey(provincia, max_length=200, null= True, blank=True, default=' ', verbose_name='Província', on_delete=models.DO_NOTHING)
+    provincia = models.ForeignKey(provincia, max_length=200, null= True, blank=True, default=' ', verbose_name='Província ou Estado', on_delete=models.DO_NOTHING)
     nurural = models.CharField(max_length=200, null= True, blank=True, default=' ', verbose_name='Província, Cidade ou Estado')
     nascimento = models.DateField(verbose_name='Data de nascimento', name=False, blank=False, help_text='2000-01-01')
     sexo = models.CharField(choices=sexo, max_length=10, verbose_name='Sexo', null=False, blank=False)
     pais = CountryField(default='Angola', null=False, blank=False, verbose_name='Páis')
     nacionalidade = models.CharField(max_length=10, verbose_name='Nacionalidade', null=False, blank=False, default='Angolana')
     estadocivil = models.CharField(choices=estadocivil, verbose_name='Estado civil', max_length=14)
+    imagem = models.FileField(upload_to='img_perfil', default='serra.jpg', null=True, blank=True)

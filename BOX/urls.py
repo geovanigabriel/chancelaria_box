@@ -10,7 +10,7 @@ from chancelaria.views import home, delete, livro_baptismo, arquidioceseCadastro
     listagemDiocese, listagemArquidiocese, listagemCongregacao, centroPesquisa, listagemProvinciaEclesiastica, \
     CadastrolivroCasamento, livroBaptismo, casamento_pdf, ver_livro, ListaLivroCasamento, livrobaptismo, dashebord, \
     dioceselista, baptismo_pdf, paroquiaBusca, updateCasamento, paroquiaPesquisa, updateBaptismo, baptismoPesquisa, \
-    registocasamento, casamentoPesquisa, perfil
+    registocasamento, casamentoPesquisa, perfil, preencherPerfil
 
 urlpatterns = [
 
@@ -34,6 +34,7 @@ urlpatterns = [
     path('lista_livro_baptismo/', livro_baptismo, name='url_listagem_livro'),
     path('dashebord/', dashebord, name='url_dashebord'),
     path('perfil/', perfil, name='url_perfil'),
+    path('preencher_perfil/', preencherPerfil, name='url_preencher_perfil'),
 
     ########   UPDATE ###############
 

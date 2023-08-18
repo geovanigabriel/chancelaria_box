@@ -3,10 +3,8 @@
 
 
 {% block content %}
-<form method="POST">
-
-    {{pessoa.as_p}}
-
-</form>
-
+{% for pessoa in pessoa %}
+        {{pessoa.nome}}
+{% endfor %}
+<button type="submit">Salvar Perfil</button>
 {% endblock %}
