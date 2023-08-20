@@ -140,4 +140,13 @@ MEDIA_URL = '/media/'
 DATE_INPUT_FORMAT = ["%d/%m/%Y"]
 PHONENUMBER_DEFAULT_REGION = 'AO'
 
+##################################
+
+EMAIL_HOSTS = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'myemail@gmail.com'
+EMAIL_HOST_PASSWORD = '*****'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
