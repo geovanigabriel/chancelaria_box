@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from datetime import time
 # Create your models here.
 sexo = [('Masculino', 'Masculino'), ('Femenino', 'Femenino')]
 congrega = [('Religiosa', 'Religiosa'), ('Diocesana', 'Diocesana')]
@@ -170,8 +170,8 @@ class registoBaptismo(models.Model):
     folha = models.CharField(max_length=4, null=False, blank=False, unique=True, verbose_name='Fl')
     sexo = models.CharField(choices=sexo, max_length=9, null=False, blank=False)
     naturalidade = models.ForeignKey(provincia, null=False, blank=False, max_length=50, on_delete=models.CASCADE)
-    municipio =  models.CharField(max_length=100, null=True, blank=True)
-    distrito = models.CharField(max_length=100, blank=True, null=True)
+    municipio =  models.CharField(max_length=100, null=True, blank=True, default='..........')
+    distrito = models.CharField(max_length=100, blank=True, null=True, default='..........')
     hora = models.DateTimeField(null=True, blank=True, )
     diocese = models.ForeignKey(diocese,max_length=100, blank=True, null=True, on_delete=models.CASCADE)
     livro = models.ForeignKey(livroBaptismo, null=False, blank=False, on_delete=models.CASCADE)
@@ -193,11 +193,13 @@ class registoBaptismo(models.Model):
     padrinho = models.CharField(max_length=150, null=True, blank=True, verbose_name='Nome completo do Padrinho')
     padrinholocalbaptismo = models.CharField(max_length=150, null=True, blank=True, verbose_name='local de baptismo do Padrinho')
     padrinhoestadocivil = models.CharField(choices=estadocivil,max_length=15, null=True, blank=True, verbose_name='Estado civil do Padrinho')
-    padrinhoprofissao = models.CharField(max_length=15, null=True, blank=False, verbose_name='Profissão do Padrinho')
+    padrinhoprofissao = models.CharField(max_length=15, null=True, blank=False, verbose_name='Profissão do Padrinho', default='..........')
+    padrinhoresidencia = models.CharField(max_length=15, null=True, blank=False, verbose_name='Residencia', default='..........')
     madrinha = models.CharField(max_length=150, null=False, blank=False, verbose_name='Nome completo Madrinha')
     madrinhalocalbaptismo = models.CharField(max_length=150, null=False, blank=False, verbose_name='Local do baptismo da Madrinha')
     madrinhaestadocivil = models.CharField(choices=estadocivil, max_length=150, null=True, blank=True, verbose_name='Estado cilvil da Madrinha', default='..........')
     madrinhaprofissao = models.CharField(max_length=150, null=True, blank=True, verbose_name='Profissão da Madrinha', default='..........')
+    madrinharesidencia = models.CharField(max_length=150, null=True, blank=True, verbose_name='Residencia', default='..........')
     imagem = models.FileField(verbose_name='Imagem do assento', upload_to='img_baptismo')
 
     class Meta:
@@ -219,3 +221,27 @@ class pessoa(models.Model):
     nacionalidade = models.CharField(max_length=10, verbose_name='Nacionalidade', null=False, blank=False, default='Angolana')
     estadocivil = models.CharField(choices=estadocivil, verbose_name='Estado civil', max_length=14)
     imagem = models.FileField(upload_to='img_perfil', default='serra.jpg', null=True, blank=True)
+sacramento = (('B','Baptismo'), ('BC','Baptismo e Comunhão'), ('BCC','Baptismo, Comunhão e Crisma'),
+              ('BCCC', 'Baptismo, Comunhão, Crisma e Matrimonio'), ('BCCS', 'Baptismo, Comunhão, Crisma e Matrimonio'))
+class AssentoDeObito(models.Model):
+    nome = models.CharField(max_length=200, null=False, blank=False, verbose_name='Nome Completo do malogrado')
+    sexo = models.CharField(max_length=14, null=False, blank=False, choices=sexo)
+    arquidiocese = models.ForeignKey(arquidiocese, max_length=50, null=False, blank=False, on_delete=models.DO_NOTHING)
+    paroquia = models.ForeignKey(paroquia, max_length=50, null=False, blank=False, on_delete=models.DO_NOTHING)
+    hora = models.TimeField(verbose_name='Hora da morte', null=True, blank=True)
+    sacramentos = models.CharField(max_length=100, choices=sacramento, null=False, blank=False, default='Sem sacremento')
+    idade = models.IntegerField(verbose_name='Idade', null=False, blank=False)
+    data = models.DateField(verbose_name='Data', null=False, blank=False)
+    numero = models.IntegerField(verbose_name='Numero', null=False, blank=False, primary_key=True)
+    estadocivil = models.CharField(max_length=14, choices=estadocivil, null=False, blank=False, verbose_name='Estado Civil')
+    conjuge = models.CharField(max_length=100, null=True, blank=True, default='.........', verbose_name='Cônjuge')
+    provincia = models.ForeignKey(provincia, max_length=100, null=True, blank=True, default='.........', verbose_name='Província', on_delete=models.DO_NOTHING)
+    endereco = models.CharField(max_length=100, null=True, blank=True, default='.........', verbose_name='Endereço')
+    nomepai = models.CharField(max_length=100, null=True, blank=True, default='..........', verbose_name='Nome do Pai')
+    provinciapai = models.CharField(max_length=100, null=True, blank=True, default='..........', verbose_name='Naturalidade do Progenitor')
+    nomemae = models.CharField(max_length=100, null=True, blank=True, default='..........', verbose_name='Nome da Mãe')
+    provinciamae = models.CharField(max_length=100, null=True, blank=True, default='..........', verbose_name='Naturalidade da Mãe')
+    paroco = models.CharField(max_length=100, null=False, blank=False, default='..........')
+    imagem = models.FileField(upload_to='imagem_obito', null=False, blank=False)
+
+

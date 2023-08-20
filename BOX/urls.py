@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 from allauth.account import views
 from chancelaria.views import home, delete, livro_baptismo, arquidioceseCadastro, zonaCadastro, centroCadastro, \
-    dioceseCadastro, updateparoquia, \
+    dioceseCadastro, updateparoquia, assentoDeObito,\
     paroquiaCadastro, vigarariaCadastro, provinciaCadastro, baptismocaCadastro, congregacaoCadastro, CadastroZona, \
     CadastroVigararia, CadastroParoquia, CadastroDiocese, listagemParoquia, listagemVigararia, listagemZona, \
     listagemDiocese, listagemArquidiocese, listagemCongregacao, centroPesquisa, listagemProvinciaEclesiastica, \
@@ -34,7 +34,9 @@ urlpatterns = [
     path('lista_livro_baptismo/', livro_baptismo, name='url_listagem_livro'),
     path('dashebord/', dashebord, name='url_dashebord'),
     path('perfil/', perfil, name='url_perfil'),
+    path('deginições/', perfil, name='url_definicao'),
     path('preencher_perfil/', preencherPerfil, name='url_preencher_perfil'),
+    path('assento_de_obito/', assentoDeObito, name='url_obito'),
 
     ########   UPDATE ###############
 
@@ -84,8 +86,5 @@ urlpatterns = [
     re_path(r"^password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$", views.password_reset_from_key, name="account_reset_password_from_key"),
     path("password/reset/key/done/", views.password_reset_from_key_done, name="account_reset_password_from_key_done"),
 ]
-
-
-
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

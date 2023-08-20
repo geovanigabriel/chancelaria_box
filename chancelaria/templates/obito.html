@@ -1,0 +1,90 @@
+{% extends "account/base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    <div class="container">
+
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.nome|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.sexo|as_crispy_field }}
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.arquidiocese|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.paroquia|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.data|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.numero|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.sacramentos|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.idade|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.estadocivil|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.conjuge|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.provincia|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.endereco|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.paroquia|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.nomepai|as_crispy_field }}
+            </div>
+            <div class="form-group row">
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.provinciapai|as_crispy_field }}
+                </div>
+                <div class="col-sm-6">
+                    {{formulario.nomemae|as_crispy_field }}
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    {{formulario.provinciamae|as_crispy_field }}
+                </div>
+            <div class="form-group row">
+
+                <div class="col-sm-6">
+                    {{formulario.imagem|as_crispy_field }}
+                </div>
+            </div>
+                {% if registo %}
+                    <a href="{% url 'baptismo_pdf' registo.pk %}" class="btn btn-primary btn-user btn-block">Baixar</a>
+                 {% else %}
+                <button type="submit" class="btn btn-primary btn-user btn-block">Salvar Registo</button>
+                {% endif %}
+            </div>
+    </div>
+</form>
+{% endblock %}

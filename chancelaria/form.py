@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from chancelaria.models import paroquia, pessoa
+from chancelaria.models import paroquia, pessoa, AssentoDeObito
 from chancelaria.models import registoBaptismo, livroCasamentoDuplicado, livroBaptismo
 from chancelaria.models import centro, zona, diocese, arquidiocese, vigararia, provinciaeclesiastica, congregacao, registoBaptismo, registoCasamento
 
@@ -78,3 +78,8 @@ class pessoaForm(ModelForm):
         model = pessoa
         fields = ('__all__')
 
+class obitoForm(ModelForm):
+
+    class Meta:
+        model= AssentoDeObito
+        fields = ('__all__')

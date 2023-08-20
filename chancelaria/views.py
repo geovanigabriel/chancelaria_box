@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 import qrcode
 from chancelaria.form import BaptimoForm, ParoquiaForm, centroForm, VigarariaForm, ArquidioceseForm, ProvinciaForm, \
-    CongregacaoForm, ZonaForm, DioceseForm, LivroFormBaptismo, camentoForm, LivroFormCasamento, pessoaForm
+    CongregacaoForm, ZonaForm, obitoForm, DioceseForm, LivroFormBaptismo, camentoForm, LivroFormCasamento, pessoaForm
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import HttpResponse, FileResponse
 from chancelaria.models import paroquia, provincia, provinciaeclesiastica, registoBaptismo, registoCasamento, \
@@ -14,6 +14,15 @@ from fpdf import FPDF
 from chancelaria.filters import dioceseBusca, paroquiaBusca, baptismoBusca, casamentoBusca, centroBusca
 from io import BytesIO
 from datetime import date
+
+def assentoDeObito(request):
+    form = obitoForm(request.POST)
+    if form.is_valid():
+        form.save()
+    context = {'formulario':form}
+    return render(request, 'obito.html', context)
+
+
 
 
 
@@ -397,7 +406,9 @@ def baptismo_pdf(request, pk):
     ###################################################     CABEÇALHO ####################################
     pdf.image("chancelaria/templates/verdade.jpeg", 1, 40, 210, 295)
     pdf.image("./chancelaria/verdadebeleza.jpeg", 84, 0, 50, 55)
-    validacaoQRCODE = qrcode.make(f'qrcode_de_validão_de Assneto de casamento de {baptismo.nome}')
+    #pdf.image(baptismo.imagem, 48, 23, 50, 44)
+    validacaoQRCODE = qrcode.make(f'qrcode_de_validação_de Assentto de baptismo de {baptismo.nome}, '
+                                  f'numero de registo {baptismo.numero}, registado na folha nº {baptismo.folha}')
     validacaoQRCODE.save(f'Assento_casamento.png')
     pdf.image('Assento_casamento.png', 84, 245, 35, 35)
 
@@ -408,34 +419,55 @@ def baptismo_pdf(request, pk):
     pdf.cell(180, 10, '                  ASSENTO DE BAPTISMO DIGITAL', 0 , 1 , 'C',  0, 'False')
     pdf.cell(180, 10, '                  ', 0 , 1 , 'C',  0, 'False')
     pdf.cell(180, 8, '                 ====== CÚRIA ARQUIDIOCESANA ======', 0 , 1 , 'C',  0, 'False')
-    ################################################## CORPO DO ASSENTO ###################################
-    datadia = baptismo.data.day
-    dia = num2words(datadia, lang='pt-br')
-    datames = baptismo.data.month
-    dataano = baptismo.data.year
-    ano = num2words(dataano, lang='pt-br')
 
-    pdf.multi_cell(190, 10, f'{dia} {mes[datames]} {ano}, nesta igreja {baptismo.paroquia}, Municipio de {baptismo.municipio},'
-                           f' {baptismo.diocese} baptizei solenimente um(a) individuo do sexo {baptismo.sexo}, a quem dei o nome de {baptismo.nome} {baptismo.sobrenome}'
-                           f'e que nasceu em {baptismo.naturalidade}, no municipio da(o) {baptismo.municipio} no dia {baptismo.nascimento}.'
-                           f'\n'
-                        
-                           f'Filho de {baptismo.nomepai}, natural de {baptismo.naturalidadepai},  {baptismo.profissaopai}, residente em {baptismo.residenciapai}, {baptismo.estadocivilpai}, '
-                           f' e de {baptismo.nomemae} natural de {baptismo.naturalidademae}, {baptismo.profissaomae} residente em {baptismo.residenciamae}, {baptismo.estadocivilmae}.'
-                           f'\n'
-                           f'Neto paterno de {baptismo.netopaternohomem} e de {baptismo.netopaternomulher}, e neto materno {baptismo.netomaternohomem} e de {baptismo.netomaternomulher}.'
-                           f'\n'
-                
-                           f'Foram Padrinhos {baptismo.padrinho}, baptizado na igreja {baptismo.padrinholocalbaptismo},   {baptismo.padrinhoestadocivil}, {baptismo.padrinhoprofissao}'
-                           f' e {baptismo.madrinha} baptizado na igreja {baptismo.madrinhalocalbaptismo}, {baptismo.madrinhaestadocivil},  {baptismo.madrinhaprofissao}')
+    ################################################## CONVERSÃO DA DATA POR EXTENSO ####################################
+    datadia = baptismo.data.day ####   DIA VALOR NUMERICO
+    dia = num2words(datadia, lang='pt-br') #### DIA POR EXTENSO
+    datames = baptismo.data.month  #### MES VALOR NUMERICO
+    dataano = baptismo.data.year ### ANO VALOR NUMERICO
+    ano = num2words(dataano, lang='pt-br')  ### ANO POR EXTENSO
+
+    dia_nascimento = baptismo.nascimento.day
+    dianascimento = num2words(dia_nascimento, lang='pt-br')
+    mes_nascimento = baptismo.nascimento.month
+    mesnascimento = num2words(mes_nascimento, lang='pt-br')
+    ano_nascimento = baptismo.nascimento.year
+    anonascimento = num2words(ano_nascimento, lang='pt-br')
+
+
+
+    ################################################## CORPO DO ASSENTO ###################################
+    pdf.multi_cell(190, 10, f'              Aos {dia} dias do mês de {mes[datames]} do ano de {ano}, na Paróquia de {baptismo.paroquia}, municiopio de {baptismo.municipio},'
+                        f' Diocese de  {baptismo.diocese} baptizei solenimente um indivíduo do sexo {baptismo.sexo} a quem dei o nome de {baptismo.nome} {baptismo.sobrenome}'
+                        f' e que nasceu na na província de {baptismo.naturalidade}, municipio de {baptismo.municipio}, às ...... horas e ......... minutos'
+                        f' do dia {dianascimento} do mês de {mes[mes_nascimento]} do ano de {anonascimento}.'
+                        f'\n'
+                        f'Filho de {baptismo.nomepai}, natural de {baptismo.naturalidadepai}, profissão {baptismo.profissaopai}, residente em {baptismo.residenciapai}, {baptismo.estadocivilpai}'
+                        f' e de {baptismo.nomemae} natural de {baptismo.naturalidademae}, profissão {baptismo.profissaomae}, residente em {baptismo.residenciamae}, {baptismo.estadocivilmae}'
+                        f'\n'
+                        f'Neto paterno de  {baptismo.netopaternohomem} e de {baptismo.netopaternomulher} e neto materno de {baptismo.netomaternohomem} e de {baptismo.netomaternomulher}'
+                        f'\n'
+                        f'Foram Padrinhos {baptismo.padrinho}, baptizado na igreja {baptismo.padrinholocalbaptismo}, {baptismo.padrinhoestadocivil}, profissão {baptismo.padrinhoprofissao}, residente em {baptismo.padrinhoresidencia}'
+                        f' e {baptismo.madrinha} baptizada na igreja {baptismo.madrinhalocalbaptismo}, {baptismo.madrinhaestadocivil} residente em {baptismo.madrinharesidencia} os quais sei serem os próprios'
+                        f'\n'
+                        f'           E, para constar lavrei em duplicado este assento, que, depois de ser lido e conferido perante:'
+                        f'\n'
+                        f'{baptismo.nomepai}'
+                        f'\n'
+                        f'{baptismo.nomemae}'
+                        f'\n'
+                        f'{baptismo.padrinho}'
+                        f'\n'
+                        f'{baptismo.madrinha}')
+
     pdf.set_xy(2, 10)
-    pdf.multi_cell(58, 10, f'Nº {baptismo.numero}'
+    pdf.multi_cell(58, 10, f'Assento Nº {baptismo.numero}'
                     f'\n'
-                    f'Fl {baptismo.folha}'
+                    f'Fl: {baptismo.folha}'
                     f'\n'  
                     f'{baptismo.nome.split()[0]} {baptismo.sobrenome}'
                     f'\n'
-                    f'{baptismo.data}', 1, 1)
+                    f'{datadia} - {datames} - {dataano}', 1, 1)
 
     pdf_conteudo = pdf.output(dest='S').encode('latin1')
     pdf_bytes = BytesIO(pdf_conteudo)
@@ -450,10 +482,10 @@ def casamento_pdf(request, pk):
     ###################################################     CABEÇALHO ####################################
     pdf_casamento.image("chancelaria/templates/verdade.jpeg", 1, 40, 210, 295)
     pdf_casamento.image("./chancelaria/verdadebeleza.jpeg", 84, 0, 50, 55)
-    validacaoQRCODE = qrcode.make(f'qrcode_de_validão_de Assneto de casamento de {casamento.nomenoivo}')
+    validacaoQRCODE = qrcode.make(f'qrcode_de_validação_de Assento de casamento do {casamento.nomenoivo} da '
+                                  f'{casamento.nomenoiva}, número de registo {casamento.numero}, e esta na folha {casamento.folha}')
     validacaoQRCODE.save(f'Assento_casamento.png')
     pdf_casamento.image('Assento_casamento.png', 84, 245, 35, 35)
-
 
     pdf_casamento.cell(10, 30, '                                                           ', 0, 1, 'C', 0, 'False')
     pdf_casamento.cell(180, 7, '                 ARQUIDIOCESE DE LUANDA', 0, 1, 'C', 0, 'False')
@@ -462,9 +494,9 @@ def casamento_pdf(request, pk):
     pdf_casamento.cell(180, 10, '                  ', 0, 1, 'C', 0, 'False')
     pdf_casamento.cell(180, 8, '                 ====== CÚRIA ARQUIDIOCESANA ======', 0, 1, 'C', 0, 'False')
     ################################################## CORPO DO ASSENTO ###################################
-    pdf_casamento.multi_cell(190, 10, 'huh')
+    pdf_casamento.multi_cell(190, 10, '0')
     pdf_casamento.set_xy(2, 10)
-    pdf_casamento.multi_cell(58, 10, f'Nº {casamento.numero}'
+    pdf_casamento.multi_cell(58, 10, f'Assento Nº {casamento.numero}'
                            f'\n'
                            f'Fl {casamento.folha}'
                            f'\n'
@@ -489,6 +521,12 @@ def paroquiaPesquisa(request):
         'busca': paroquiabusca,
     }
     return (render(request, 'paroquiabusca.html', context))
+from chancelaria.models import AssentoDeObito
+def obito_pdf(request, pk):
+    pdf = get_object_or_404(AssentoDeObito, pk=pk)
+    pdf_obito = FPDF()
+    pdf_obito.add_page('P', 'mm', 'A4')
+    pdf_obito.set_font('Arial ', 'B', '14')
 @login_required()
 def centroPesquisa(request):
     banco = centro.objects.all()
