@@ -172,7 +172,7 @@
 
                             <div class="input-group-append">
                                 {% if user.is_authenticated %}
-                                    {{user.Nome }}
+                                        {{ user.get_nome }}
                                 {% endif %}
                                 <h6></h6>
                             </div>

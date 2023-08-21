@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from datetime import time
 # Create your models here.
+
+sacramento = (('B','Baptismo'), ('BC','Baptismo e Comunhão'), ('BCC','Baptismo, Comunhão e Crisma'), ('BCCC', 'Baptismo, Comunhão, Crisma e Matrimonio'), ('BCCS', 'Baptismo, Comunhão, Crisma e Matrimonio'))
 sexo = [('Masculino', 'Masculino'), ('Femenino', 'Femenino')]
 congrega = [('Religiosa', 'Religiosa'), ('Diocesana', 'Diocesana')]
 raca = [('Negra', 'Negra'), ('Branca', 'Branca'), ('Mista', 'Mista')]
@@ -221,8 +223,6 @@ class pessoa(models.Model):
     nacionalidade = models.CharField(max_length=10, verbose_name='Nacionalidade', null=False, blank=False, default='Angolana')
     estadocivil = models.CharField(choices=estadocivil, verbose_name='Estado civil', max_length=14)
     imagem = models.FileField(upload_to='img_perfil', default='serra.jpg', null=True, blank=True)
-sacramento = (('B','Baptismo'), ('BC','Baptismo e Comunhão'), ('BCC','Baptismo, Comunhão e Crisma'),
-              ('BCCC', 'Baptismo, Comunhão, Crisma e Matrimonio'), ('BCCS', 'Baptismo, Comunhão, Crisma e Matrimonio'))
 class AssentoDeObito(models.Model):
     nome = models.CharField(max_length=200, null=False, blank=False, verbose_name='Nome Completo do malogrado')
     sexo = models.CharField(max_length=14, null=False, blank=False, choices=sexo)

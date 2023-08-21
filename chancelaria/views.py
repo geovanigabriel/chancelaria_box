@@ -69,6 +69,9 @@ def ver_livro(request, pk):
 def ListaLivroCasamento(request):
     livros = livroCasamentoDuplicado.objects.all()
     return render(request, 'duplicadoscasamento.html', {'livros':livros})
+def ListaLivroBaptismo(request):
+    livros = livroCasamentoDuplicado.objects.all()
+    return render(request, 'duplicadosbaptismo.html', {'livros':livros})
 
 @login_required()
 def dioceselista(request):
@@ -232,9 +235,11 @@ def congregacaoCadastro(request):
 
 @login_required()
 def CadastrolivroCasamento(request):
-    livroCasamento = LivroFormCasamento(request.POST)
-    livroBaptismo = LivroFormBaptismo(request.POST)
-
+    livroCasamento = LivroFormCasamento(request.POST, request.FILES)
+    livroBaptismo = LivroFormBaptismo(request.POST, request.FILES)
+    if livroCasamento.is_valid():
+        livroCasamento.save()
+        return redirect(ListaLivroCasamento)
     context = {
         'formulariocasamento': livroCasamento,
         'formulario': livroBaptismo
@@ -244,12 +249,11 @@ def CadastrolivroCasamento(request):
 
 @login_required()
 def livrobaptismo(request):
-
-    livroBaptismo = LivroFormBaptismo(request.POST)
-
-    context = {
-        'formulariobaptismo': livroBaptismo,
-    }
+    livroBaptismo = LivroFormBaptismo(request.POST, request.FILES)
+    if livroBaptismo.is_valid():
+        livroBaptismo.save()
+        return redirect(ListaLivroBaptismo)
+    context = {'formulariobaptismo': livroBaptismo}
     return render(request, 'livro.html', context)
 
 

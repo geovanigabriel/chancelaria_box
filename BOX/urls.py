@@ -4,13 +4,13 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 from allauth.account import views
 from chancelaria.views import home, delete, livro_baptismo, arquidioceseCadastro, zonaCadastro, centroCadastro, \
-    dioceseCadastro, updateparoquia, assentoDeObito,\
+    dioceseCadastro, updateparoquia, assentoDeObito, \
     paroquiaCadastro, vigarariaCadastro, provinciaCadastro, baptismocaCadastro, congregacaoCadastro, CadastroZona, \
     CadastroVigararia, CadastroParoquia, CadastroDiocese, listagemParoquia, listagemVigararia, listagemZona, \
     listagemDiocese, listagemArquidiocese, listagemCongregacao, centroPesquisa, listagemProvinciaEclesiastica, \
     CadastrolivroCasamento, livroBaptismo, casamento_pdf, ver_livro, ListaLivroCasamento, livrobaptismo, dashebord, \
     dioceselista, baptismo_pdf, paroquiaBusca, updateCasamento, paroquiaPesquisa, updateBaptismo, baptismoPesquisa, \
-    registocasamento, casamentoPesquisa, perfil, preencherPerfil
+    registocasamento, casamentoPesquisa, perfil, preencherPerfil, ListaLivroBaptismo
 
 urlpatterns = [
 
@@ -45,9 +45,10 @@ urlpatterns = [
     path('updatecasamento/<int:pk>/', updateCasamento, name='url_update_casamento'),
     path('delete/<int:pk>/', delete, name='url_delete'),
 
-
     path('lista_livro_casamento/', ListaLivroCasamento, name='url_lista_livro_casamento'),
+    path('lista_livro_baptismo/', ListaLivroBaptismo, name='url_lista_livro_baptismo'),
     path('cadastro_livro_baptismo/', livrobaptismo, name='url_livro_baptismo'),
+    path('cadastro_livro_casamento/', CadastrolivroCasamento, name='url_livro_casamento'),
     path('cadastro_baptismo/', baptismocaCadastro, name='url_baptismo'),
     path('cadastro_casamento/', registocasamento, name='url_casamento'),
 
