@@ -498,7 +498,7 @@ def casamento_pdf(request, pk):
     pdf_casamento.cell(180, 10, '                  ', 0, 1, 'C', 0, 'False')
     pdf_casamento.cell(180, 8, '                 ====== CÚRIA ARQUIDIOCESANA ======', 0, 1, 'C', 0, 'False')
     ################################################## CORPO DO ASSENTO ###################################
-    pdf_casamento.multi_cell(190, 10, '0')
+    pdf_casamento.multi_cell(190, 10)
     pdf_casamento.set_xy(2, 10)
     pdf_casamento.multi_cell(58, 10, f'Assento Nº {casamento.numero}'
                            f'\n'
