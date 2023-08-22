@@ -13,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0_1!l$mh-wkha0+49he3#vjgmbn317h_4vw1-(2_ndfufc(8wo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'BOX.wsgi.application'
 DATABASES = {
 'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'boxdb',
+            'NAME': 'banco',
             'PORT': '3306',
             'HOST': 'localhost',
             'USER': 'root',
