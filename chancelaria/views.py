@@ -498,7 +498,14 @@ def casamento_pdf(request, pk):
     pdf_casamento.cell(180, 10, '                  ', 0, 1, 'C', 0, 'False')
     pdf_casamento.cell(180, 8, '                 ====== CÚRIA ARQUIDIOCESANA ======', 0, 1, 'C', 0, 'False')
     ################################################## CORPO DO ASSENTO ###################################
-    pdf_casamento.multi_cell(190, 10)
+    pdf_casamento.multi_cell(190, 10, f'Número {casamento.numero} as {casamento.horo} horas e  {casamento.minutos} minutos do dia {casamento.dia}'
+                                      f' de {casamento.mes} de {casamento.ano} peranre mim {casamento.celebrante} na paróquia {casamento.paroquia}'
+                                      f' concelho {casamento.concelho} (Arqui) Diocese de {casamento.diocese} comparaceram os nubentos {casamento.nomenoivo} e {casamento.nomenoiva}'
+                                      f'\n'
+                                      f'Ele, de {casamento.idadenoivo} anos de idade, no estado de {casamento.estadocivilnoivo} de profissão {casamento.profissonoivo} natural de {casamento.naturalidadenoivo} '
+                                      f'baptizado na {casamento.paroquiabatismo} local de residencia, filho de {casamento.painoivo} solteiro natural '
+                                      f' {casamento.naturalidadepai} e de '
+                                    )
     pdf_casamento.set_xy(2, 10)
     pdf_casamento.multi_cell(58, 10, f'Assento Nº {casamento.numero}'
                            f'\n'
