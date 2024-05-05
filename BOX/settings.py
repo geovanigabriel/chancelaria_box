@@ -81,13 +81,9 @@ WSGI_APPLICATION = 'BOX.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'banco',
-            'PORT': '3306',
-            'HOST': 'localhost',
-            'USER': 'root',
-            'PASSWORD': 'nassoma2012',
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
